@@ -1,0 +1,19 @@
+# SecurePass Password Manager Dependencies
+
+# GUI Framework
+PyQt5>=5.15.0
+
+# Cryptography
+cryptography>=3.4.8
+
+# Clipboard functionality
+pyperclip>=1.8.2
+
+# Database
+# Using built-in sqlite3
+
+# Password strength checking and generation
+# Using built-in utilities in utils.py
+
+# Additional recommended packages for enhanced security
+argon2-cffi>=21.1.0  # Enhanced password hashing (optional upgrade)
