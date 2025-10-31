@@ -1,158 +1,158 @@
-# ⚡ SECUREPASS - CYBER DEFENSE MATRIX ⚡
+# 🛡️ SecurePass - Professional Password Manager
 
-A cutting-edge cybersecurity-themed password manager featuring advanced encryption and a stunning cyberpunk interface.
+A sophisticated, security-focused password manager with military-grade encryption and a stunning modern interface.
 
-## � Cybersecurity Interface Features
+## 🎨 Enhanced Interface Features
 
-### ⚡ Cyber Login Terminal
-- **Neon Animations**: Matrix-style entrance effects with cyberpunk color schemes
-- **Terminal Aesthetics**: Monospace fonts and command-line inspired design
-- **Security Monitoring**: Live encryption status with neon indicators
-- **Threat Analysis**: Real-time password strength assessment with cyber styling
+### 🔐 Secure Login Experience
+- **Animated Security Elements**: Smooth fade-in animations with security status indicators
+- **Gradient Backgrounds**: Professional dark theme with security-focused color palette
+- **Password Strength Analysis**: Real-time visual feedback with color-coded strength indicators
+- **Security Notices**: Enhanced warnings and encryption status displays
 
-### 🔺 Cyber Defense Dashboard
-- **Matrix Interface**: Dark cyber theme with neon green/cyan accents
-- **Security Command Center**: Live vault status, session monitoring, and encryption displays
-- **Cyber Data Grid**: Enhanced table with hover effects and neon borders
-- **Control Panels**: Organized cyber-style button layouts with glow effects
+### 🏠 Main Dashboard
+- **Security Status Panel**: Live encryption status, session monitoring, and vault protection indicators
+- **Enhanced Data Table**: Hover effects, improved sorting, and professional styling
+- **Organized Button Layout**: Grouped by function with visual separators and security classifications
+- **Smart Search**: Real-time filtering with enhanced placeholder text and focus effects
 
-### �️ Advanced Cyber Tools
-- **Crypto Generator**: Cyberpunk-styled password creation interface
-- **Secure Vault Dialog**: Multi-layer encryption notices with cyber aesthetics
-- **Threat Feedback**: Color-coded status messages with neon glow effects
+### 🔧 Advanced Tools
+- **Professional Password Generator**: Enhanced UI with detailed character type options and security recommendations
+- **Secure Credential Dialog**: Multi-section layout with encryption notices and enhanced form validation
+- **Visual Feedback**: Status messages with color-coded styling and auto-clearing clipboard notifications
 
-## ⚡ Cybersecurity Design Elements
+## ✨ Visual Enhancements
 
-### 🎨 Cyber Color Palette
-- **Primary**: Electric Cyan (#00f5ff) - Main interface elements
-- **Secondary**: Matrix Green (#39ff14) - Borders and accents
-- **Warning**: Cyber Pink (#ff1493) - Alerts and special functions
-- **Background**: Deep Space Black (#000814) - Base dark theme
+### 🎨 Design System
+- **Color Palette**: Security-focused dark theme with teal accents (#0d7377, #14a085)
+- **Typography**: Professional fonts (Segoe UI, San Francisco) with proper hierarchy
+- **Animations**: Smooth transitions, hover effects, and entrance animations
+- **Icons**: Comprehensive emoji-based icon system for intuitive navigation
 
-### � Visual Effects
-- **Neon Glow**: Animated border lighting and text shadows
-- **Matrix Patterns**: Subtle background gradients and geometric effects
-- **Hover Animations**: Interactive feedback with cyber-style transitions
-- **Terminal Icons**: Cybersecurity-focused emoji and symbol system
+### 🛡️ Security Visual Elements
+- **Encryption Indicators**: Live status of AES-256 encryption
+- **Session Monitoring**: Active session tracking with auto-lock warnings
+- **Trust Signals**: Visual confirmation of secure operations
+- **Data Protection**: Clear indicators when data is being encrypted/decrypted
 
-## 🚀 Quick Cyber Deploy
+## 🚀 Installation & Setup
 
 ### Prerequisites
 ```bash
-# Install Python 3.8+ for cyber operations
-# Deploy required cyber modules:
+# Install Python 3.8+
+# Then install dependencies:
 pip install -r requirements.txt
 ```
 
-### Required Cyber Dependencies
-- **PyQt5** (>=5.15.0): Advanced cyber GUI framework
-- **cryptography** (>=3.4.8): Military-grade encryption protocols
-- **pyperclip** (>=1.8.2): Secure data transfer operations
+### Required Dependencies
+- **PyQt5** (>=5.15.0): Modern GUI framework
+- **cryptography** (>=3.4.8): Military-grade encryption
+- **pyperclip** (>=1.8.2): Secure clipboard operations
 
-### Launch Cyber System
+### Quick Start
 ```bash
-# Navigate to cyber defense directory
+# Navigate to the project directory
 cd SecurePass
 
-# Initialize cyber defense matrix
-python cyber_demo.py
+# Run the application
+python src/main.py
 ```
 
-## 🔐 Cyber Security Protocols
+## 🔐 Security Features
 
-### ⛨ Encryption Matrix
-- **AES-256 Cipher**: Advanced encryption standard for data protection
-- **PBKDF2 Key Generation**: Secure password-based key derivation
-- **Salt Matrix**: Unique salting for each encryption operation
-- **Memory Scrubbing**: Automatic clearing of sensitive data buffers
+### 🛡️ Encryption
+- **AES-256 Encryption**: Military-grade encryption for all stored data
+- **PBKDF2 Key Derivation**: Secure password-based key generation
+- **Salt-based Hashing**: Each password uniquely salted
+- **Secure Memory Handling**: Automatic memory clearing for sensitive data
 
-### � Defense Mechanisms
-- **Auto-Lock Protocol**: Configurable security timeout (default: 300s)
-- **Clipboard Sanitization**: Automatic data clearing after 30 seconds
-- **Session Monitoring**: Continuous security status verification
-- **Access Control**: Multi-layer authentication requirements
+### 🔒 Protection Mechanisms
+- **Auto-lock Timer**: Configurable automatic vault locking (default: 5 minutes)
+- **Clipboard Security**: Automatic clipboard clearing after 30 seconds
+- **Session Management**: Secure session handling with re-authentication
+- **Master Password Verification**: Multiple verification layers
 
-## 🎮 Cyber Interface Guide
+## 📱 User Interface
 
-### ⚡ Matrix Login System
-1. **System Boot**: Animated cyber interface initialization
-2. **Access Credentials**: Enter master security key with strength analysis
-3. **Vault Unlock**: Advanced decryption sequence with visual feedback
+### 🎨 Modern Design Elements
+- **Gradient Backgrounds**: Sophisticated color transitions
+- **Shadow Effects**: Subtle depth and professional appearance
+- **Hover Animations**: Interactive feedback for better UX
+- **Status Indicators**: Real-time system status with color coding
 
-### � Command Center Operations
-1. **Data Scan**: Search encrypted credential database
-2. **Crypto Operations**: Generate secure passwords with cyber algorithms
-3. **Vault Management**: Add/edit/delete credentials with encryption verification
-4. **Transfer Protocols**: Secure import/export with data integrity checks
+### 🔧 Enhanced Functionality
+- **Smart Categories**: Icon-based credential categorization
+- **Advanced Search**: Real-time filtering with highlighting
+- **Export/Import**: Secure data transfer with encryption preservation
+- **Password Generation**: Customizable secure password creation
 
-## �️ Technical Cyber Architecture
+## 🛠️ Technical Architecture
 
-### 📁 Cyber Project Structure
+### 📁 Project Structure
 ```
 SecurePass/
 ├── src/
-│   ├── main.py          # Cyber login terminal
-│   ├── gui.py           # Main cyber interface
-│   ├── crypto_lib.py    # Encryption protocols
-│   ├── db.py            # Secure database management
-│   └── utils.py         # Cyber utility functions
-├── cyber_demo.py        # Cybersecurity demo launcher
-├── requirements.txt     # Cyber dependencies
-└── README.md           # This cyber manual
+│   ├── main.py          # Application entry point with enhanced login
+│   ├── gui.py           # Main UI with modern styling
+│   ├── crypto_lib.py    # Encryption and security functions
+│   ├── db.py            # Database management
+│   └── utils.py         # Utility functions and helpers
+├── requirements.txt     # Python dependencies
+└── README.md           # This file
 ```
 
 ### 🔐 Security Implementation
-- **Zero-Knowledge Protocol**: Master key never stored in memory
-- **Local Encryption**: All data secured with AES-256 locally
-- **Secure Key Management**: Advanced PBKDF2 with salt matrix
-- **Memory Protection**: Automatic security buffer clearing
+- **Zero-knowledge Architecture**: Master password never stored
+- **Local Data Storage**: All data encrypted locally using SQLite
+- **Secure Key Management**: PBKDF2 with configurable iterations
+- **Memory Protection**: Sensitive data automatically cleared
 
-## ⚡ Cyber Features
+## 🎯 Key Features
 
-### 🎮 Enhanced Cyber Experience
-- **Cyberpunk Interface**: Neon-themed dark matrix with cyber aesthetics
-- **Matrix Animations**: Smooth cyber transitions and glow effects
-- **Terminal Navigation**: Command-line inspired layout and typography
-- **Real-time Monitoring**: Live security status with threat indicators
+### ✨ Enhanced User Experience
+- **Professional Interface**: Modern dark theme with security focus
+- **Smooth Animations**: Fade effects and hover transitions
+- **Intuitive Navigation**: Clear visual hierarchy and organization
+- **Real-time Feedback**: Instant status updates and confirmations
 
-### � Advanced Cyber Security
-- **Multi-layer Encryption**: AES-256 with advanced key derivation
-- **Session Security**: Auto-lock and continuous monitoring protocols
-- **Data Sanitization**: Automatic clearing of sensitive information
-- **Threat Analysis**: Real-time security assessment and recommendations
+### 🛡️ Advanced Security
+- **Multi-layer Encryption**: AES-256 with secure key derivation
+- **Session Security**: Auto-lock and re-authentication requirements
+- **Clipboard Protection**: Automatic clearing of sensitive data
+- **Password Analysis**: Real-time strength checking and recommendations
 
-## 🚀 Cyber Operations
+## 🚀 Usage
 
-1. **System Initialize**: Launch with cyber_demo.py for full cyber experience
-2. **Secure Access**: Create master credentials with cyber strength analysis
-3. **Crypto Generation**: Use advanced cyber algorithms for password creation
-4. **Data Operations**: Manage encrypted vault with cyber-style interface
-5. **Defense Monitoring**: Track security status with real-time cyber indicators
+1. **First Launch**: Create your master password with strength analysis
+2. **Add Credentials**: Use the enhanced credential dialog with security indicators
+3. **Generate Passwords**: Utilize the advanced password generator with customizable options
+4. **Manage Data**: Export/import with full encryption preservation
+5. **Stay Secure**: Monitor security status and utilize auto-lock features
 
-## 🎨 Cyber Visual Preview
+## 🎨 Visual Preview
 
-The cybersecurity interface features:
-- ⚡ **Matrix Login Terminal**: Animated cyber entrance with neon effects
-- � **Cyber Defense Dashboard**: Dark matrix theme with terminal aesthetics
-- �️ **Advanced Crypto Tools**: Cyberpunk-styled dialogs with neon feedback
-- 📊 **Security Monitoring**: Real-time threat analysis and encryption status
+The enhanced interface features:
+- 🔐 **Animated Login Screen**: Smooth security-focused entrance
+- 🛡️ **Professional Dashboard**: Dark theme with security indicators
+- 🔧 **Advanced Tools**: Enhanced dialogs with visual feedback
+- 📊 **Status Monitoring**: Real-time security and session tracking
 
-## � Cyber Security Best Practices
+## 🛡️ Security Best Practices
 
-- Deploy strong, unique master access credentials
-- Enable auto-lock protocols for unattended terminals
-- Regularly backup encrypted data with integrity verification
-- Monitor system status for security updates and patches
-- Utilize cyber crypto generators for maximum security entropy
+- Use a strong, unique master password
+- Enable auto-lock for unattended sessions
+- Regularly backup your encrypted data
+- Keep the application updated for security patches
+- Use the built-in password generator for new accounts
 
-## 🤝 Cyber Development
+## 🤝 Contributing
 
-This cyber defense system requires:
-- Advanced cybersecurity coding protocols
-- Security impact assessments for all modifications
-- Maintenance of cyberpunk visual standards
-- Comprehensive testing across cyber environments
+This is a security-critical application. All contributions should:
+- Follow secure coding practices
+- Include security impact assessments
+- Maintain the professional visual standards
+- Test thoroughly across different environments
 
 ---
 
-**⚡ SECUREPASS ⚡** - Advanced cybersecurity password management with cutting-edge cyber defense matrix interface.
+**SecurePass** - Professional password management with uncompromising security and stunning visual design.

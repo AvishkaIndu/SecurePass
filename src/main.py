@@ -70,106 +70,335 @@ class LoginWindow(QDialog):
         self.setup_ui()
 
     def setup_ui(self):
-        """Initialize cybersecurity-themed login UI"""
-        self.setWindowTitle("⚡ SECUREPASS - CYBER DEFENSE SYSTEM ⚡")
-        self.setFixedSize(550, 650)
+        """Initialize login UI with cybersecurity theme"""
+        self.setWindowTitle("CyberVault - Secure Access Terminal")
+        self.setFixedSize(500, 650)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowTitleHint)
 
-        # Apply cybersecurity dark theme with neon effects
+        # Apply cybersecurity-themed dark theme
         self.setStyleSheet("""
             QDialog {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #000814, stop:0.3 #001d3d, stop:0.7 #003566, stop:1 #000814);
-                color: #00f5ff;
-                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-                border: 3px solid #00f5ff;
-                border-radius: 8px;
-                background-image: 
-                    radial-gradient(circle at 20% 50%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(57, 255, 20, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 80%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
+                    stop:0 #0a0a0a, stop:0.3 #1a1a2e, stop:0.7 #16213e, stop:1 #0a0a0a);
+                color: #00ff00;
+                font-family: 'Consolas', 'Courier New', monospace;
+                border: 3px solid #00ff41;
+                border-radius: 0px;
             }
             QLabel {
-                color: #00f5ff;
+                color: #00ff00;
                 font-size: 12pt;
                 background: transparent;
-                font-weight: bold;
-                text-shadow: 0 0 10px #00f5ff;
+                border: none;
             }
             QLineEdit {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 rgba(0, 0, 0, 0.8), stop:1 rgba(0, 20, 40, 0.8));
-                border: 2px solid #39ff14;
-                border-radius: 6px;
-                padding: 12px 16px;
-                color: #00f5ff;
-                font-size: 11pt;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #001100, stop:1 #002200);
+                border: 2px solid #00ff41;
+                border-radius: 0px;
+                padding: 12px 15px;
+                color: #00ff00;
+                font-size: 12pt;
                 font-family: 'Consolas', monospace;
-                selection-background-color: #39ff14;
-                font-weight: bold;
+                selection-background-color: #00ff41;
+                selection-color: #000000;
             }
             QLineEdit:focus {
-                border: 2px solid #00f5ff;
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 rgba(0, 245, 255, 0.1), stop:1 rgba(0, 20, 40, 0.9));
-                box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
-            }
-            QLineEdit::placeholder {
-                color: #39ff14;
-                font-style: italic;
+                border: 2px solid #00ff88;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #002200, stop:1 #001a00);
+                box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
             }
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 rgba(57, 255, 20, 0.8), 
-                    stop:0.5 rgba(0, 245, 255, 0.8), 
-                    stop:1 rgba(57, 255, 20, 0.8));
-                color: #000814;
-                border: 2px solid #39ff14;
-                border-radius: 8px;
+                    stop:0 #003300, stop:0.5 #00ff41, stop:1 #003300);
+                color: #000000;
+                border: 2px solid #00ff41;
+                border-radius: 0px;
                 padding: 12px 20px;
                 font-weight: bold;
-                font-size: 11pt;
+                font-size: 12pt;
                 font-family: 'Consolas', monospace;
                 min-height: 20px;
                 text-transform: uppercase;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 rgba(0, 245, 255, 0.9), 
-                    stop:0.5 rgba(57, 255, 20, 0.9), 
-                    stop:1 rgba(0, 245, 255, 0.9));
-                box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
-                transform: translateY(-2px);
+                    stop:0 #00ff41, stop:0.5 #66ff88, stop:1 #00ff41);
+                box-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+                color: #000000;
             }
             QPushButton:pressed {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 rgba(255, 20, 147, 0.8), 
-                    stop:1 rgba(57, 255, 20, 0.8));
-                transform: translateY(1px);
-                box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+                    stop:0 #002200, stop:0.5 #00aa22, stop:1 #002200);
+                color: #00ff00;
             }
             QProgressBar {
-                border: 2px solid #39ff14;
-                border-radius: 6px;
+                border: 2px solid #00ff41;
+                border-radius: 0px;
                 text-align: center;
-                background: rgba(0, 0, 0, 0.8);
-                height: 20px;
-                color: #00f5ff;
+                background: #001100;
+                height: 25px;
+                color: #00ff00;
                 font-weight: bold;
                 font-family: 'Consolas', monospace;
             }
             QProgressBar::chunk {
-                border-radius: 4px;
+                border-radius: 0px;
+                margin: 1px;
+            }
+            QFrame#cyber_frame {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 rgba(0, 255, 65, 0.1), 
+                    stop:0.5 rgba(0, 255, 65, 0.05), 
+                    stop:1 rgba(0, 255, 65, 0.1));
+                border: 2px solid #00ff41;
+                border-radius: 0px;
+                padding: 20px;
+            }
+        """)
+
+        # Main layout
+        main_layout = QVBoxLayout(self)
+        main_layout.setSpacing(20)
+        main_layout.setContentsMargins(30, 30, 30, 30)
+
+        # Cyber frame container
+        cyber_frame = SecurityFrame()
+        cyber_frame.setObjectName("cyber_frame")
+        frame_layout = QVBoxLayout(cyber_frame)
+        frame_layout.setSpacing(20)
+        frame_layout.setContentsMargins(20, 20, 20, 20)
+
+        # ASCII Art Header
+        ascii_header = QLabel("""
+ ▄████▄▓██   ██▓ ▄▄▄▄   ▓█████  ██▀███  
+▒██▀ ▀█ ▒██  ██▒▓█████▄ ▓█   ▀ ▓██   ▒ 
+▒▓█    ▄ ▒██ ██░▒██▒ ▄██▒███   ▓██▄   
+▒▓▓▄ ▄██▒░ ▐██▓░▒██░█▀  ▒▓█  ▄ ▒   ██▒
+▒ ▓███▀ ░░ ██▒▓░░▓█  ▀█▓░▒████▒░██████▒
+░ ░▒ ▒  ░ ██▒▒▒ ░▒▓███▀▒░░ ▒░ ░░ ▒░▓  ░
+        """)
+        ascii_header.setAlignment(Qt.AlignCenter)
+        ascii_header.setStyleSheet("""
+            color: #00ff41;
+            font-family: 'Consolas', monospace;
+            font-size: 9pt;
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff41;
+        """)
+        frame_layout.addWidget(ascii_header)
+
+        # System Status
+        status_text = "[SYSTEM] INITIALIZING SECURE CONNECTION..."
+        if not self.setup_mode:
+            status_text = "[SYSTEM] AWAITING AUTHENTICATION..."
+        
+        self.system_status = AnimatedLabel(status_text)
+        self.system_status.setAlignment(Qt.AlignCenter)
+        self.system_status.setStyleSheet("""
+            color: #00ff88;
+            font-family: 'Consolas', monospace;
+            font-size: 11pt;
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            border-radius: 0px;
+        """)
+        frame_layout.addWidget(self.system_status)
+
+        # Terminal-style instruction
+        instruction_text = "[VAULT] CREATE MASTER ACCESS CODE" if self.setup_mode else "[AUTH] ENTER ACCESS CREDENTIALS"
+        instruction = QLabel(instruction_text)
+        instruction.setAlignment(Qt.AlignCenter)
+        instruction.setStyleSheet("""
+            color: #00ddff;
+            font-family: 'Consolas', monospace;
+            font-size: 10pt;
+            padding: 8px;
+            background: rgba(0, 221, 255, 0.1);
+            border: 1px dashed #00ddff;
+        """)
+        frame_layout.addWidget(instruction)
+
+        # Password input section
+        input_section = QVBoxLayout()
+        input_section.setSpacing(15)
+
+        # Master password input
+        pwd_label = QLabel("[INPUT] MASTER_PASSWORD:")
+        pwd_label.setStyleSheet("font-weight: bold; font-size: 11pt; color: #00ff88;")
+        input_section.addWidget(pwd_label)
+
+        self.password_input = QLineEdit()
+        self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_input.setPlaceholderText("Enter secure access code...")
+        self.password_input.returnPressed.connect(self.handle_login)
+        input_section.addWidget(self.password_input)
+
+        if self.setup_mode:
+            # Confirm password
+            confirm_label = QLabel("[VERIFY] CONFIRM_PASSWORD:")
+            confirm_label.setStyleSheet("font-weight: bold; font-size: 11pt; color: #00ff88;")
+            input_section.addWidget(confirm_label)
+            
+            self.confirm_input = QLineEdit()
+            self.confirm_input.setEchoMode(QLineEdit.Password)
+            self.confirm_input.setPlaceholderText("Re-enter access code...")
+            self.confirm_input.returnPressed.connect(self.handle_login)
+            input_section.addWidget(self.confirm_input)
+
+            # Password strength with cyber styling
+            self.password_input.textChanged.connect(self.update_strength)
+            
+            strength_label = QLabel("[ANALYSIS] PASSWORD_STRENGTH:")
+            strength_label.setStyleSheet("font-weight: bold; font-size: 10pt; color: #ffaa00;")
+            input_section.addWidget(strength_label)
+            
+            self.strength_bar = QProgressBar()
+            self.strength_bar.setMaximum(100)
+            input_section.addWidget(self.strength_bar)
+            
+            self.strength_label = QLabel("[STATUS] ANALYZING...")
+            self.strength_label.setStyleSheet("font-size: 9pt; color: #00ff88; font-family: 'Consolas', monospace;")
+            self.strength_label.setAlignment(Qt.AlignCenter)
+            input_section.addWidget(self.strength_label)
+
+            # Cyber security warning
+            warning = QLabel("[WARNING] CRITICAL_SECURITY_NOTICE")
+            warning.setAlignment(Qt.AlignCenter)
+            warning.setStyleSheet("""
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 rgba(255, 0, 0, 0.2), 
+                    stop:1 rgba(255, 100, 0, 0.2));
+                border: 2px solid #ff3300;
+                border-radius: 0px;
+                padding: 12px;
+                color: #ff6600;
+                font-size: 10pt;
+                font-weight: bold;
+                font-family: 'Consolas', monospace;
+                margin: 10px 0;
+            """)
+            input_section.addWidget(warning)
+            
+            warning_detail = QLabel("[INFO] ACCESS CODE CANNOT BE RECOVERED IF LOST\n[ACTION] STORE IN SECURE LOCATION")
+            warning_detail.setAlignment(Qt.AlignCenter)
+            warning_detail.setStyleSheet("""
+                color: #ff8800; 
+                font-size: 9pt; 
+                font-family: 'Consolas', monospace;
+                padding: 5px;
+                background: rgba(255, 136, 0, 0.1);
+                border: 1px dashed #ff8800;
+            """)
+            input_section.addWidget(warning_detail)
+
+        frame_layout.addLayout(input_section)
+
+        # Action button
+        btn_text = "[INITIALIZE] CREATE_VAULT" if self.setup_mode else "[EXECUTE] ACCESS_VAULT"
+        self.login_btn = QPushButton(btn_text)
+        self.login_btn.clicked.connect(self.handle_login)
+        self.login_btn.setMinimumHeight(50)
+        frame_layout.addWidget(self.login_btn)
+
+        # System info
+        info_text = "[CRYPTO] INITIALIZING AES-256 ENCRYPTION" if self.setup_mode else "[SYSTEM] DECRYPTION_MODULE_READY"
+        self.info_label = AnimatedLabel(info_text)
+        self.info_label.setAlignment(Qt.AlignCenter)
+        self.info_label.setStyleSheet("""
+            background: rgba(0, 100, 255, 0.1);
+            border: 1px solid #0066ff;
+            border-radius: 0px;
+            padding: 10px;
+            color: #0088ff;
+            font-size: 9pt;
+            font-family: 'Consolas', monospace;
+        """)
+        frame_layout.addWidget(self.info_label)
+
+        main_layout.addWidget(cyber_frame)
+        
+        # Start entrance animations
+        QTimer.singleShot(100, self.animate_entrance)
+
+        # Apply modern security-themed dark theme
+        self.setStyleSheet("""
+            QDialog {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #0f1419, stop:0.5 #1a1f2e, stop:1 #0f1419);
+                color: #e0e6ed;
+                font-family: 'Segoe UI', 'San Francisco', Arial;
+                border: 2px solid #2d3748;
+                border-radius: 15px;
+            }
+            QLabel {
+                color: #e0e6ed;
+                font-size: 12pt;
+                background: transparent;
+            }
+            QLineEdit {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #2d3748, stop:1 #1a202c);
+                border: 2px solid #4a5568;
+                border-radius: 10px;
+                padding: 15px 20px;
+                color: #e0e6ed;
+                font-size: 12pt;
+                selection-background-color: #0d7377;
+            }
+            QLineEdit:focus {
+                border: 2px solid #0d7377;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #0d7377, stop:0.1 #2d3748, stop:1 #1a202c);
+                box-shadow: 0 0 20px rgba(13, 115, 119, 0.3);
+            }
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                padding: 15px 25px;
+                font-weight: bold;
+                font-size: 13pt;
+                min-height: 20px;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #14a085, stop:0.5 #17c4a5, stop:1 #14a085);
+                transform: translateY(-2px);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #0a5f63, stop:0.5 #0d7377, stop:1 #0a5f63);
+                transform: translateY(1px);
+            }
+            QProgressBar {
+                border: 2px solid #4a5568;
+                border-radius: 8px;
+                text-align: center;
+                background: #1a202c;
+                height: 25px;
+                color: white;
+                font-weight: bold;
+            }
+            QProgressBar::chunk {
+                border-radius: 6px;
                 margin: 1px;
             }
             QFrame#security_frame {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 rgba(0, 245, 255, 0.1), 
-                    stop:0.5 rgba(57, 255, 20, 0.1), 
-                    stop:1 rgba(0, 245, 255, 0.1));
-                border: 2px solid #00f5ff;
-                border-radius: 10px;
-                padding: 15px;
+                    stop:0 rgba(45, 55, 72, 0.8), 
+                    stop:0.5 rgba(26, 32, 44, 0.9), 
+                    stop:1 rgba(45, 55, 72, 0.8));
+                border: 1px solid #4a5568;
+                border-radius: 15px;
+                padding: 20px;
             }
         """)
 
@@ -189,58 +418,44 @@ class LoginWindow(QDialog):
         title_container = QVBoxLayout()
         title_container.setSpacing(10)
         
-        self.title = AnimatedLabel("⚡ SECUREPASS ⚡")
+        self.title = AnimatedLabel("�️ SecurePass")
         self.title.setAlignment(Qt.AlignCenter)
-        title_font = QFont("Consolas", 28, QFont.Bold)
+        title_font = QFont("Segoe UI", 24, QFont.Bold)
         self.title.setFont(title_font)
         self.title.setStyleSheet("""
-            color: #00f5ff;
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(0, 245, 255, 0.2), 
-                stop:0.5 rgba(57, 255, 20, 0.2), 
-                stop:1 rgba(0, 245, 255, 0.2));
-            border: 2px solid #39ff14;
-            border-radius: 8px;
-            padding: 8px;
-            text-shadow: 0 0 15px #00f5ff;
+            color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
+            padding: 10px;
         """)
         title_container.addWidget(self.title)
         
-        # Cyber subtitle with matrix effect
-        self.subtitle = AnimatedLabel("[CYBER DEFENSE PROTOCOL]" if not self.setup_mode else "[INITIALIZING SECURE VAULT]")
+        # Animated subtitle
+        self.subtitle = AnimatedLabel("Professional Password Management" if not self.setup_mode else "Vault Initialization")
         self.subtitle.setAlignment(Qt.AlignCenter)
         self.subtitle.setStyleSheet("""
-            color: #39ff14; 
-            font-size: 10pt; 
-            font-weight: bold;
-            font-family: 'Consolas', monospace;
+            color: #a0aec0; 
+            font-size: 11pt; 
+            font-weight: 300;
             padding: 5px;
-            text-shadow: 0 0 8px #39ff14;
-            background: rgba(57, 255, 20, 0.1);
-            border: 1px solid #39ff14;
-            border-radius: 4px;
         """)
         title_container.addWidget(self.subtitle)
         
         frame_layout.addLayout(title_container)
         frame_layout.addSpacing(15)
 
-        # Cyber security status indicator
-        self.security_status = AnimatedLabel("⚡ ENCRYPTED ⚡ • 🔐 SECURE • ⛨ PROTECTED ⛨")
+        # Security status indicator
+        self.security_status = AnimatedLabel("🔒 Encrypted • 🔐 Secure • 🛡️ Protected")
         self.security_status.setAlignment(Qt.AlignCenter)
         self.security_status.setStyleSheet("""
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(0, 245, 255, 0.2), 
-                stop:0.5 rgba(57, 255, 20, 0.3), 
-                stop:1 rgba(0, 245, 255, 0.2));
-            border: 2px solid #00f5ff;
-            border-radius: 15px;
-            padding: 8px;
-            font-size: 9pt;
-            color: #00f5ff;
-            font-family: 'Consolas', monospace;
-            font-weight: bold;
-            text-shadow: 0 0 10px #00f5ff;
+                stop:0 rgba(13, 115, 119, 0.2), 
+                stop:0.5 rgba(20, 160, 133, 0.3), 
+                stop:1 rgba(13, 115, 119, 0.2));
+            border: 1px solid #0d7377;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 10pt;
+            color: #81e6d9;
         """)
         frame_layout.addWidget(self.security_status)
         frame_layout.addSpacing(10)
@@ -249,21 +464,15 @@ class LoginWindow(QDialog):
         input_section = QVBoxLayout()
         input_section.setSpacing(15)
 
-        # Master password label with cyber styling
-        password_label = QLabel("⚡ MASTER ACCESS KEY ⚡")
-        password_label.setStyleSheet("""
-            font-weight: bold; 
-            font-size: 11pt; 
-            color: #00f5ff;
-            font-family: 'Consolas', monospace;
-            text-shadow: 0 0 8px #00f5ff;
-        """)
+        # Master password label
+        password_label = QLabel("🔑 Master Password")
+        password_label.setStyleSheet("font-weight: bold; font-size: 11pt; color: #e0e6ed;")
         input_section.addWidget(password_label)
 
-        # Password input with cyber styling
+        # Password input with icon
         self.password_input = QLineEdit()
         self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_input.setPlaceholderText(">>> ENTER SECURE ACCESS CREDENTIALS <<<")
+        self.password_input.setPlaceholderText("Enter your secure master password...")
         self.password_input.returnPressed.connect(self.handle_login)
         input_section.addWidget(self.password_input)
 
@@ -365,46 +574,38 @@ class LoginWindow(QDialog):
         password = self.password_input.text()
         score, label, color = PasswordStrengthChecker.check_strength(password)
         
-        # Cyber-enhanced strength bar styling
+        # Cyber-themed strength bar styling
         self.strength_bar.setValue(score)
-        self.strength_label.setText(f"⚡ SECURITY LEVEL: {label.upper()} ⚡")
         
-        # Cyber color scheme based on strength
+        # Cyber status messages
         if score < 25:
-            gradient_color = "#ff1744"  # Cyber Red
-            text_color = "#ff5722"
-            glow_color = "#ff1744"
+            cyber_label = "[THREAT] WEAK_SECURITY"
+            gradient_color = "#ff0040"
+            text_color = "#ff4080"
         elif score < 50:
-            gradient_color = "#ff9800"  # Cyber Orange
-            text_color = "#ffb74d"
-            glow_color = "#ff9800"
+            cyber_label = "[CAUTION] MODERATE_SECURITY"
+            gradient_color = "#ff8000"
+            text_color = "#ffaa40"
         elif score < 75:
-            gradient_color = "#ffeb3b"  # Cyber Yellow
-            text_color = "#fff176"
-            glow_color = "#ffeb3b"
+            cyber_label = "[GOOD] STRONG_SECURITY"
+            gradient_color = "#ffff00"
+            text_color = "#ffff80"
         else:
-            gradient_color = "#39ff14"  # Cyber Green
-            text_color = "#76ff03"
-            glow_color = "#39ff14"
+            cyber_label = "[SECURE] MAXIMUM_SECURITY"
+            gradient_color = "#00ff40"
+            text_color = "#80ff80"
             
+        self.strength_label.setText(cyber_label)
+        
         self.strength_bar.setStyleSheet(f"""
             QProgressBar::chunk {{
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 {gradient_color}, 
-                    stop:0.5 rgba(0, 245, 255, 0.5), 
-                    stop:1 {gradient_color});
-                border-radius: 4px;
+                    stop:0 {gradient_color}, stop:1 rgba(0,255,65,0.3));
+                border-radius: 0px;
                 margin: 1px;
-                box-shadow: 0 0 15px {glow_color};
             }}
         """)
-        self.strength_label.setStyleSheet(f"""
-            font-size: 9pt; 
-            color: {text_color}; 
-            font-weight: bold;
-            font-family: 'Consolas', monospace;
-            text-shadow: 0 0 8px {glow_color};
-        """)
+        self.strength_label.setStyleSheet(f"font-size: 9pt; color: {text_color}; font-weight: bold; font-family: 'Consolas', monospace;")
 
     def handle_login(self):
         """Handle login or initial setup"""
