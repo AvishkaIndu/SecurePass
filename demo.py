@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-SecurePass Demo Script
-Demonstrates the enhanced security-focused interface
+SecurePass Cyber Security Demo Script
+Demonstrates the enhanced cybersecurity-focused interface with animations
 """
 
 import sys
@@ -11,36 +11,48 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def main():
-    """Launch SecurePass with enhanced interface"""
+    """Launch SecurePass with enhanced cyber security interface"""
     try:
-        print("🛡️ SecurePass - Professional Password Manager")
-        print("=" * 50)
-        print("🔐 Launching enhanced security interface...")
-        print("✨ Features include:")
-        print("   • Animated login with security indicators")
-        print("   • Professional dark theme with gradients")
-        print("   • Real-time password strength analysis")
-        print("   • Enhanced security visual elements")
-        print("   • Smooth hover effects and transitions")
-        print("   • Organized security-focused layout")
-        print("=" * 50)
+        print("🛡️  SECUREPASS - CLASSIFIED PASSWORD MANAGEMENT SYSTEM")
+        print("=" * 60)
+        print("🔐 [SYSTEM] Initializing cyber security interface...")
+        print("🟢 [STATUS] Loading enhanced security features...")
+        print()
+        print("✨ CYBER SECURITY FEATURES:")
+        print("   🚫 ACCESS DENIED animations for wrong passwords")
+        print("   ✅ ACCESS GRANTED animations for successful login")
+        print("   🔒 Terminal-style security status indicators")
+        print("   ⏰ Real-time system monitoring")
+        print("   🛡️ Enhanced encryption visual feedback")
+        print("   📊 Cyber-style status displays")
+        print("   🎯 Improved font rendering and layout")
+        print()
+        print("💡 TRY THIS:")
+        print("   • Enter wrong password to see ACCESS DENIED animation")
+        print("   • Enter correct password to see ACCESS GRANTED animation")
+        print("   • Notice the cyber-style terminal elements")
+        print("   • Check the real-time system status indicators")
+        print("=" * 60)
+        print("🚀 [LAUNCHING] Cyber Security Interface...")
+        print()
         
         # Import and run the main application
         from main import main as run_app
         run_app()
         
     except ImportError as e:
-        print(f"❌ Error: Missing dependencies - {e}")
-        print("📋 Please install requirements:")
+        print(f"❌ [ERROR] Missing dependencies - {e}")
+        print("📋 [SOLUTION] Install requirements:")
         print("   pip install -r requirements.txt")
-        print("\n📦 Required packages:")
-        print("   • PyQt5 >= 5.15.0")
-        print("   • cryptography >= 3.4.8") 
-        print("   • pyperclip >= 1.8.2")
+        print()
+        print("📦 [REQUIRED] Packages:")
+        print("   • PyQt5 >= 5.15.0 (GUI Framework)")
+        print("   • cryptography >= 3.4.8 (Encryption)") 
+        print("   • pyperclip >= 1.8.2 (Clipboard Security)")
         
     except Exception as e:
-        print(f"❌ Application error: {e}")
-        print("🔧 Please check your Python installation and dependencies")
+        print(f"❌ [SYSTEM ERROR] {e}")
+        print("🔧 [DIAGNOSTIC] Check Python installation and dependencies")
 
 if __name__ == '__main__':
     main()

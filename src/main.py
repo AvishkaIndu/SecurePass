@@ -6,13 +6,144 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout,
                              QLabel, QLineEdit, QPushButton, QMessageBox,
                              QProgressBar, QFrame, QGraphicsOpacityEffect,
-                             QGraphicsDropShadowEffect)
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty
+                             QGraphicsDropShadowEffect, QGraphicsColorizeEffect)
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty, QSequentialAnimationGroup, QParallelAnimationGroup
 from PyQt5.QtGui import QFont, QPalette, QLinearGradient, QBrush, QColor, QPainter
 from crypto_lib import CryptoManager
 from db import DatabaseManager
 from gui import MainWindow
 from utils import PasswordStrengthChecker
+
+
+class CyberSecurityAnimator:
+    """Handles cybersecurity-style animations for access control"""
+    
+    @staticmethod
+    def create_access_denied_animation(parent, callback=None):
+        """Create glitchy red 'ACCESS DENIED' animation"""
+        # Create overlay label
+        overlay = QLabel("🚫 ACCESS DENIED 🚫", parent)
+        overlay.setAlignment(Qt.AlignCenter)
+        overlay.setStyleSheet("""
+            QLabel {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 rgba(220, 38, 127, 0.95), 
+                    stop:0.5 rgba(239, 68, 68, 0.95), 
+                    stop:1 rgba(220, 38, 127, 0.95));
+                color: white;
+                font-size: 22pt;
+                font-weight: bold;
+                font-family: 'Courier New', monospace;
+                border: 3px solid #dc2626;
+                border-radius: 15px;
+                padding: 20px;
+                letter-spacing: 3px;
+            }
+        """)
+        overlay.setGeometry(parent.rect())
+        overlay.show()
+        
+        # Create glitch animation sequence
+        animation_group = QSequentialAnimationGroup()
+        
+        # Initial flash
+        flash1 = QPropertyAnimation(overlay, b"opacity")
+        flash1.setDuration(100)
+        flash1.setStartValue(0.0)
+        flash1.setEndValue(1.0)
+        flash1.setEasingCurve(QEasingCurve.OutBounce)
+        
+        # Glitch effect (rapid opacity changes)
+        for i in range(8):
+            glitch = QPropertyAnimation(overlay, b"opacity")
+            glitch.setDuration(50)
+            glitch.setStartValue(1.0 if i % 2 == 0 else 0.3)
+            glitch.setEndValue(0.3 if i % 2 == 0 else 1.0)
+            animation_group.addAnimation(glitch)
+        
+        # Final fade out
+        fade_out = QPropertyAnimation(overlay, b"opacity")
+        fade_out.setDuration(800)
+        fade_out.setStartValue(1.0)
+        fade_out.setEndValue(0.0)
+        fade_out.setEasingCurve(QEasingCurve.InQuad)
+        
+        animation_group.addAnimation(flash1)
+        animation_group.addAnimation(fade_out)
+        
+        # Cleanup and callback
+        def cleanup():
+            overlay.deleteLater()
+            if callback:
+                callback()
+        
+        animation_group.finished.connect(cleanup)
+        animation_group.start()
+        
+        return animation_group
+    
+    @staticmethod
+    def create_access_granted_animation(parent, callback=None):
+        """Create matrix-style green 'ACCESS GRANTED' animation"""
+        # Create overlay label
+        overlay = QLabel("✅ ACCESS GRANTED ✅", parent)
+        overlay.setAlignment(Qt.AlignCenter)
+        overlay.setStyleSheet("""
+            QLabel {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 rgba(5, 150, 105, 0.95), 
+                    stop:0.5 rgba(34, 197, 94, 0.95), 
+                    stop:1 rgba(5, 150, 105, 0.95));
+                color: white;
+                font-size: 22pt;
+                font-weight: bold;
+                font-family: 'Courier New', monospace;
+                border: 3px solid #059669;
+                border-radius: 15px;
+                padding: 20px;
+                letter-spacing: 3px;
+            }
+        """)
+        overlay.setGeometry(parent.rect())
+        overlay.show()
+        
+        # Create matrix-style animation sequence
+        animation_group = QSequentialAnimationGroup()
+        
+        # Matrix-style entrance (typing effect simulation)
+        for i in range(5):
+            flash = QPropertyAnimation(overlay, b"opacity")
+            flash.setDuration(80)
+            flash.setStartValue(0.0 if i == 0 else 0.7)
+            flash.setEndValue(1.0)
+            flash.setEasingCurve(QEasingCurve.OutQuad)
+            animation_group.addAnimation(flash)
+        
+        # Hold for dramatic effect
+        hold = QPropertyAnimation(overlay, b"opacity")
+        hold.setDuration(1200)
+        hold.setStartValue(1.0)
+        hold.setEndValue(1.0)
+        animation_group.addAnimation(hold)
+        
+        # Smooth fade out
+        fade_out = QPropertyAnimation(overlay, b"opacity")
+        fade_out.setDuration(600)
+        fade_out.setStartValue(1.0)
+        fade_out.setEndValue(0.0)
+        fade_out.setEasingCurve(QEasingCurve.InQuad)
+        animation_group.addAnimation(fade_out)
+        
+        # Cleanup and callback
+        def cleanup():
+            overlay.deleteLater()
+            if callback:
+                callback()
+        
+        animation_group.finished.connect(cleanup)
+        animation_group.start()
+        
+        return animation_group
 
 
 class AnimatedLabel(QLabel):
@@ -23,6 +154,9 @@ class AnimatedLabel(QLabel):
         self._opacity = 1.0
         self.opacity_effect = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.opacity_effect)
+        # Fix font display issues
+        self.setMinimumHeight(30)
+        self.setContentsMargins(4, 4, 4, 4)
         
     def get_opacity(self):
         return self._opacity
@@ -49,14 +183,20 @@ class SecurityFrame(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFrameStyle(QFrame.NoFrame)
+        # Fix layout issues
+        self.setMinimumHeight(100)
+        self.setContentsMargins(10, 10, 10, 10)
         
         # Add drop shadow effect
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(25)
-        shadow.setXOffset(0)
-        shadow.setYOffset(5)
-        shadow.setColor(QColor(0, 0, 0, 80))
-        self.setGraphicsEffect(shadow)
+        try:
+            shadow = QGraphicsDropShadowEffect()
+            shadow.setBlurRadius(25)
+            shadow.setXOffset(0)
+            shadow.setYOffset(5)
+            shadow.setColor(QColor(0, 0, 0, 80))
+            self.setGraphicsEffect(shadow)
+        except:
+            pass  # Fallback if effects not available
 
 
 class LoginWindow(QDialog):
@@ -72,7 +212,7 @@ class LoginWindow(QDialog):
     def setup_ui(self):
         """Initialize login UI with modern security-focused design"""
         self.setWindowTitle("SecurePass - Secure Authentication")
-        self.setFixedSize(500, 600)
+        self.setFixedSize(550, 650)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowTitleHint)
 
         # Apply modern security-themed dark theme
@@ -89,16 +229,21 @@ class LoginWindow(QDialog):
                 color: #e0e6ed;
                 font-size: 12pt;
                 background: transparent;
+                padding: 8px 12px;
+                line-height: 1.4;
+                min-height: 20px;
             }
             QLineEdit {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 10px;
-                padding: 15px 20px;
+                padding: 18px 24px;
                 color: #e0e6ed;
-                font-size: 12pt;
+                font-size: 13pt;
                 selection-background-color: #0d7377;
+                min-height: 24px;
+                line-height: 1.3;
             }
             QLineEdit:focus {
                 border: 2px solid #0d7377;
@@ -112,10 +257,11 @@ class LoginWindow(QDialog):
                 color: white;
                 border: none;
                 border-radius: 12px;
-                padding: 15px 25px;
+                padding: 18px 30px;
                 font-weight: bold;
-                font-size: 13pt;
-                min-height: 20px;
+                font-size: 14pt;
+                min-height: 25px;
+                line-height: 1.2;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -132,13 +278,15 @@ class LoginWindow(QDialog):
                 border-radius: 8px;
                 text-align: center;
                 background: #1a202c;
-                height: 25px;
+                height: 30px;
                 color: white;
                 font-weight: bold;
+                font-size: 11pt;
+                padding: 4px;
             }
             QProgressBar::chunk {
                 border-radius: 6px;
-                margin: 1px;
+                margin: 2px;
             }
             QFrame#security_frame {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -147,14 +295,14 @@ class LoginWindow(QDialog):
                     stop:1 rgba(45, 55, 72, 0.8));
                 border: 1px solid #4a5568;
                 border-radius: 15px;
-                padding: 20px;
+                padding: 25px;
             }
         """)
 
-        # Main layout
+        # Main layout with proper spacing
         main_layout = QVBoxLayout(self)
-        main_layout.setSpacing(25)
-        main_layout.setContentsMargins(40, 40, 40, 40)
+        main_layout.setSpacing(30)
+        main_layout.setContentsMargins(45, 45, 45, 45)
 
         # Security frame container
         security_frame = SecurityFrame()
@@ -165,21 +313,34 @@ class LoginWindow(QDialog):
 
         # Animated title with security icon
         title_container = QVBoxLayout()
-        title_container.setSpacing(10)
+        title_container.setSpacing(15)
         
-        self.title = AnimatedLabel("�️ SecurePass")
+        self.title = AnimatedLabel("🛡️ SecurePass")
         self.title.setAlignment(Qt.AlignCenter)
-        title_font = QFont("Segoe UI", 24, QFont.Bold)
+        title_font = QFont("Segoe UI", 26, QFont.Bold)
         self.title.setFont(title_font)
+        self.title.setMinimumHeight(50)
         self.title.setStyleSheet("""
             color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
                 stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
-            padding: 10px;
+            padding: 15px;
+            margin: 10px;
         """)
         title_container.addWidget(self.title)
         
         # Animated subtitle
-        self.subtitle = AnimatedLabel("Professional Password Management" if not self.setup_mode else "Vault Initialization")
+        subtitle_text = "Professional Password Management" if not self.setup_mode else "Vault Initialization"
+        self.subtitle = AnimatedLabel(subtitle_text)
+        self.subtitle.setAlignment(Qt.AlignCenter)
+        self.subtitle.setMinimumHeight(35)
+        self.subtitle.setStyleSheet("""
+            color: #a0aec0; 
+            font-size: 12pt; 
+            font-weight: 300;
+            padding: 10px;
+            margin: 5px;
+        """)
+        title_container.addWidget(self.subtitle)
         self.subtitle.setAlignment(Qt.AlignCenter)
         self.subtitle.setStyleSheet("""
             color: #a0aec0; 
@@ -352,32 +513,38 @@ class LoginWindow(QDialog):
         self.strength_label.setStyleSheet(f"font-size: 9pt; color: {text_color}; font-weight: bold;")
 
     def handle_login(self):
-        """Handle login or initial setup"""
+        """Handle login or initial setup with cyber security animations"""
         password = self.password_input.text()
 
         if not password:
-            QMessageBox.warning(self, "Error", "Please enter a password")
+            # Show cyber-style warning for empty password
+            CyberSecurityAnimator.create_access_denied_animation(self)
             return
 
         if self.setup_mode:
             # Initial setup
             confirm = self.confirm_input.text()
             if password != confirm:
-                QMessageBox.warning(self, "Error", "Passwords do not match")
+                # Show access denied animation for password mismatch
+                CyberSecurityAnimator.create_access_denied_animation(self)
                 return
 
             # Check password strength
             score, _, _ = PasswordStrengthChecker.check_strength(password)
             if score < 50:
                 reply = QMessageBox.question(
-                    self, "Weak Password",
-                    "Your password is weak. Continue anyway?",
+                    self, "⚠️ Weak Password Detected",
+                    "🔒 Security Alert: Your password strength is below recommended levels.\n\nContinue with weak password?",
                     QMessageBox.Yes | QMessageBox.No
                 )
                 if reply == QMessageBox.No:
                     return
 
             try:
+                # Show processing animation
+                self.login_btn.setText("🔐 Creating Secure Vault...")
+                self.login_btn.setEnabled(False)
+                
                 # Generate salt and derive key
                 self.crypto.derive_key(password)
 
@@ -385,17 +552,23 @@ class LoginWindow(QDialog):
                 self.db.save_config('salt', self.crypto.get_salt_b64())
                 self.db.save_config('iterations', str(CryptoManager.ITERATIONS))
 
-                QMessageBox.information(
-                    self, "Success",
-                    "Vault created successfully!\n\nYou can now add your credentials."
-                )
-
-                self.launch_main_window()
+                # Show access granted animation
+                def on_success_complete():
+                    self.launch_main_window()
+                
+                CyberSecurityAnimator.create_access_granted_animation(self, on_success_complete)
+                
             except Exception as e:
-                QMessageBox.critical(self, "Error", f"Setup failed: {str(e)}")
+                self.login_btn.setText("🛡️ Create Secure Vault")
+                self.login_btn.setEnabled(True)
+                CyberSecurityAnimator.create_access_denied_animation(self)
         else:
             # Login with existing vault
             try:
+                # Show processing state
+                self.login_btn.setText("🔓 Authenticating...")
+                self.login_btn.setEnabled(False)
+                
                 # Load salt
                 salt_b64 = self.db.get_config('salt')
                 self.crypto.set_salt_from_b64(salt_b64)
@@ -410,12 +583,22 @@ class LoginWindow(QDialog):
                     try:
                         self.crypto.decrypt(credentials[0]['password_encrypted'])
                     except:
-                        QMessageBox.critical(self, "Error", "Invalid master password")
+                        # Show cyber-style access denied animation
+                        self.login_btn.setText("🔓 Unlock Vault")
+                        self.login_btn.setEnabled(True)
+                        CyberSecurityAnimator.create_access_denied_animation(self)
                         return
 
-                self.launch_main_window()
+                # Show access granted animation and proceed
+                def on_login_complete():
+                    self.launch_main_window()
+                
+                CyberSecurityAnimator.create_access_granted_animation(self, on_login_complete)
+                
             except Exception as e:
-                QMessageBox.critical(self, "Error", f"Login failed: {str(e)}")
+                self.login_btn.setText("🔓 Unlock Vault")
+                self.login_btn.setEnabled(True)
+                CyberSecurityAnimator.create_access_denied_animation(self)
 
     def launch_main_window(self):
         """Launch main application window"""

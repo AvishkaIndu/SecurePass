@@ -31,21 +31,21 @@ class MainWindow(QMainWindow):
     
     def setup_ui(self):
         """Initialize UI components with enhanced security design"""
-        self.setWindowTitle("🛡️ SecurePass - Professional Password Manager")
-        self.setGeometry(100, 100, 1200, 700)
+        self.setWindowTitle("🛡️ SecurePass - [CLASSIFIED] Password Management System")
+        self.setGeometry(100, 100, 1200, 750)
         self.apply_dark_theme()
         
         # Central widget
         central = QWidget()
         self.setCentralWidget(central)
         layout = QVBoxLayout(central)
-        layout.setSpacing(15)
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(20)
+        layout.setContentsMargins(25, 25, 25, 25)
         
-        # Security header with status indicators
+        # Security header with cyber-style status indicators
         header_layout = QHBoxLayout()
         
-        # Security status panel
+        # Cyber security status panel
         security_panel = QWidget()
         security_panel.setObjectName("security_panel")
         security_panel.setStyleSheet("""
@@ -56,42 +56,86 @@ class MainWindow(QMainWindow):
                     stop:1 rgba(13, 115, 119, 0.2));
                 border: 1px solid #0d7377;
                 border-radius: 10px;
-                padding: 10px;
+                padding: 15px;
             }
         """)
         security_layout = QHBoxLayout(security_panel)
         
-        vault_status = QLabel("🔒 Vault: ENCRYPTED")
-        vault_status.setStyleSheet("color: #81e6d9; font-weight: bold; font-size: 10pt;")
+        # Cyber-style status indicators
+        vault_status = QLabel("🔒 [VAULT:ENCRYPTED]")
+        vault_status.setStyleSheet("""
+            color: #00ff00; 
+            font-weight: bold; 
+            font-size: 11pt;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
         security_layout.addWidget(vault_status)
         
-        session_status = QLabel("🟢 Session: ACTIVE")
-        session_status.setStyleSheet("color: #68d391; font-weight: bold; font-size: 10pt;")
+        session_status = QLabel("🟢 [SESSION:ACTIVE]")
+        session_status.setStyleSheet("""
+            color: #00ff88; 
+            font-weight: bold; 
+            font-size: 11pt;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
         security_layout.addWidget(session_status)
         
-        encryption_status = QLabel("🛡️ AES-256 Protected")
-        encryption_status.setStyleSheet("color: #90cdf4; font-weight: bold; font-size: 10pt;")
+        encryption_status = QLabel("🛡️ [AES-256:OPERATIONAL]")
+        encryption_status.setStyleSheet("""
+            color: #88ddff; 
+            font-weight: bold; 
+            font-size: 11pt;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
         security_layout.addWidget(encryption_status)
+        
+        # Real-time cyber clock
+        self.cyber_clock = QLabel("⏰ [SYS-TIME:LOADING...]")
+        self.cyber_clock.setStyleSheet("""
+            color: #ffaa00; 
+            font-weight: bold; 
+            font-size: 10pt;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
+        security_layout.addWidget(self.cyber_clock)
+        
+        # Update time every second
+        self.time_timer = QTimer()
+        self.time_timer.timeout.connect(self.update_cyber_time)
+        self.time_timer.start(1000)
+        self.update_cyber_time()
         
         header_layout.addWidget(security_panel)
         header_layout.addStretch()
         
-        # Search and lock section
+        # Search and lock section with cyber styling
         search_lock_layout = QHBoxLayout()
         
-        # Enhanced search bar
+        # Enhanced search bar with terminal styling
         self.search_box = QLineEdit()
-        self.search_box.setPlaceholderText("🔍 Search your encrypted credentials...")
+        self.search_box.setPlaceholderText("🔍 [SEARCH] Enter target credentials...")
         self.search_box.textChanged.connect(self.search_credentials)
-        self.search_box.setMinimumHeight(40)
+        self.search_box.setMinimumHeight(45)
+        self.search_box.setStyleSheet(self.search_box.styleSheet() + """
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
         search_lock_layout.addWidget(self.search_box)
         
-        # Lock button with security styling
-        lock_btn = QPushButton("🔒 Lock Vault")
+        # Lock button with cyber security styling
+        lock_btn = QPushButton("🔒 [LOCK_VAULT]")
         lock_btn.clicked.connect(self.lock_vault)
         lock_btn.setProperty("class", "danger")
-        lock_btn.setMinimumHeight(40)
-        lock_btn.setMaximumWidth(120)
+        lock_btn.setMinimumHeight(45)
+        lock_btn.setMaximumWidth(150)
+        lock_btn.setStyleSheet(lock_btn.styleSheet() + """
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        """)
         search_lock_layout.addWidget(lock_btn)
         
         header_layout.addLayout(search_lock_layout)
@@ -182,9 +226,22 @@ class MainWindow(QMainWindow):
         btn_layout.addStretch()
         layout.addWidget(btn_frame)
         
-        # Enhanced status bar
-        status_text = "🟢 Ready | 🔒 Auto-lock in 5 minutes | 🛡️ All data encrypted with AES-256"
+        # Enhanced status bar with cyber styling
+        status_text = "🟢 [SYSTEM:READY] | 🔒 [AUTO-LOCK:5MIN] | 🛡️ [ENCRYPTION:AES-256-ACTIVE]"
         self.statusBar().showMessage(status_text)
+        self.statusBar().setStyleSheet("""
+            QStatusBar {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #1a202c, stop:1 #2d3748);
+                border-top: 2px solid #0d7377;
+                color: #00ff88;
+                padding: 10px;
+                font-size: 10pt;
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                letter-spacing: 1px;
+            }
+        """)
     
     def apply_dark_theme(self):
         """Apply modern security-focused dark theme with gradients and effects"""
@@ -195,7 +252,7 @@ class MainWindow(QMainWindow):
                     stop:0 #0f1419, stop:0.3 #1a1f2e, stop:0.7 #1a1f2e, stop:1 #0f1419);
                 color: #e2e8f0;
                 font-family: 'Segoe UI', 'San Francisco', Arial;
-                font-size: 10pt;
+                font-size: 11pt;
             }
             
             /* Search Bar Styling */
@@ -204,10 +261,12 @@ class MainWindow(QMainWindow):
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 8px;
-                padding: 12px 16px;
+                padding: 15px 20px;
                 color: #e2e8f0;
-                font-size: 11pt;
+                font-size: 12pt;
                 selection-background-color: #0d7377;
+                min-height: 20px;
+                line-height: 1.4;
             }
             QLineEdit:focus {
                 border: 2px solid #0d7377;
@@ -226,9 +285,11 @@ class MainWindow(QMainWindow):
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 8px;
-                padding: 12px;
+                padding: 15px;
                 color: #e2e8f0;
                 selection-background-color: #0d7377;
+                font-size: 11pt;
+                line-height: 1.4;
             }
             QTextEdit:focus {
                 border: 2px solid #0d7377;
@@ -240,9 +301,11 @@ class MainWindow(QMainWindow):
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 8px;
-                padding: 8px 12px;
+                padding: 12px 16px;
                 color: #e2e8f0;
                 min-width: 120px;
+                min-height: 20px;
+                font-size: 11pt;
             }
             QComboBox:focus {
                 border: 2px solid #0d7377;
@@ -262,6 +325,7 @@ class MainWindow(QMainWindow):
                 border: 1px solid #4a5568;
                 selection-background-color: #0d7377;
                 color: #e2e8f0;
+                padding: 5px;
             }
             
             /* SpinBox Styling */
@@ -270,8 +334,10 @@ class MainWindow(QMainWindow):
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 8px;
-                padding: 8px 12px;
+                padding: 12px 16px;
                 color: #e2e8f0;
+                min-height: 20px;
+                font-size: 11pt;
             }
             QSpinBox:focus {
                 border: 2px solid #0d7377;
@@ -284,10 +350,11 @@ class MainWindow(QMainWindow):
                 color: white;
                 border: none;
                 border-radius: 8px;
-                padding: 12px 20px;
+                padding: 15px 25px;
                 font-weight: bold;
-                font-size: 10pt;
-                min-height: 15px;
+                font-size: 11pt;
+                min-height: 20px;
+                line-height: 1.2;
                 transition: all 0.3s ease;
             }
             QPushButton:hover {
@@ -447,6 +514,14 @@ class MainWindow(QMainWindow):
         except:
             pass  # Fallback if effects not available
     
+    def update_cyber_time(self):
+        """Update cyber-style system time display"""
+        from datetime import datetime
+        current_time = datetime.now()
+        time_str = current_time.strftime("%H:%M:%S")
+        date_str = current_time.strftime("%Y.%m.%d")
+        self.cyber_clock.setText(f"⏰ [SYS:{date_str}_{time_str}]")
+
     def on_cell_hover(self, row, column):
         """Handle cell hover effects"""
         # Add subtle visual feedback for hovered rows
