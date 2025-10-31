@@ -1,99 +1,18 @@
+"""
+SecurePass Password Manager - Main Entry Point
+Handles initial setup, login, and application launch
+"""
 import sys
 from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout,
                              QLabel, QLineEdit, QPushButton, QMessageBox,
                              QProgressBar, QFrame, QGraphicsOpacityEffect,
                              QGraphicsDropShadowEffect)
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty, QRect
-from PyQt5.QtGui import QFont, QPalette, QLinearGradient, QBrush, QColor, QPainter, QPen
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty
+from PyQt5.QtGui import QFont, QPalette, QLinearGradient, QBrush, QColor, QPainter
 from crypto_lib import CryptoManager
 from db import DatabaseManager
 from gui import MainWindow
 from utils import PasswordStrengthChecker
-
-
-class CyberSecurityFrame(QFrame):
-    """Enhanced security frame with cyber animations"""
-    
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setFrameStyle(QFrame.NoFrame)
-        self.grid_alpha = 0.0
-        self.scan_position = 0
-        
-        # Add animated shadow effect
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(30)
-        shadow.setXOffset(0)
-        shadow.setYOffset(8)
-        shadow.setColor(QColor(13, 115, 119, 120))
-        self.setGraphicsEffect(shadow)
-        
-        # Start cyber animations
-        self.start_cyber_animations()
-    
-    def start_cyber_animations(self):
-        """Start cybersecurity-themed animations"""
-        # Grid animation
-        self.grid_timer = QTimer()
-        self.grid_timer.timeout.connect(self.animate_grid)
-        self.grid_timer.start(100)
-        
-        # Scanning animation
-        self.scan_timer = QTimer()
-        self.scan_timer.timeout.connect(self.animate_scan)
-        self.scan_timer.start(50)
-    
-    def animate_grid(self):
-        """Animate background grid effect"""
-        self.grid_alpha = (self.grid_alpha + 0.02) % 1.0
-        self.update()
-    
-    def animate_scan(self):
-        """Animate scanning line effect"""
-        self.scan_position = (self.scan_position + 2) % self.width()
-        self.update()
-    
-    def paintEvent(self, event):
-        """Custom paint event for cyber effects"""
-        super().paintEvent(event)
-        
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-        
-        # Draw cyber grid pattern
-        grid_color = QColor(13, 115, 119, int(50 + 30 * self.grid_alpha))
-        painter.setPen(QPen(grid_color, 1))
-        
-        # Draw grid lines
-        for x in range(0, self.width(), 30):
-            painter.drawLine(x, 0, x, self.height())
-        for y in range(0, self.height(), 30):
-            painter.drawLine(0, y, self.width(), y)
-        
-        # Draw scanning line
-        scan_color = QColor(20, 160, 133, 150)
-        painter.setPen(QPen(scan_color, 2))
-        painter.drawLine(self.scan_position, 0, self.scan_position, self.height())
-        
-        # Draw corner brackets (cyber style)
-        bracket_color = QColor(13, 115, 119, 200)
-        painter.setPen(QPen(bracket_color, 3))
-        
-        # Top-left bracket
-        painter.drawLine(10, 10, 30, 10)
-        painter.drawLine(10, 10, 10, 30)
-        
-        # Top-right bracket
-        painter.drawLine(self.width() - 30, 10, self.width() - 10, 10)
-        painter.drawLine(self.width() - 10, 10, self.width() - 10, 30)
-        
-        # Bottom-left bracket
-        painter.drawLine(10, self.height() - 30, 10, self.height() - 10)
-        painter.drawLine(10, self.height() - 10, 30, self.height() - 10)
-        
-        # Bottom-right bracket
-        painter.drawLine(self.width() - 10, self.height() - 30, self.width() - 10, self.height() - 10)
-        painter.drawLine(self.width() - 30, self.height() - 10, self.width() - 10, self.height() - 10)
 
 
 class AnimatedLabel(QLabel):
@@ -124,12 +43,20 @@ class AnimatedLabel(QLabel):
         self.animation.start()
 
 
-class SecurityFrame(CyberSecurityFrame):
-    """Custom frame with enhanced cybersecurity styling and animations"""
+class SecurityFrame(QFrame):
+    """Custom frame with security-themed styling"""
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        # Additional security frame specific styling will be handled by CSS
+        self.setFrameStyle(QFrame.NoFrame)
+        
+        # Add drop shadow effect
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        shadow.setXOffset(0)
+        shadow.setYOffset(5)
+        shadow.setColor(QColor(0, 0, 0, 80))
+        self.setGraphicsEffect(shadow)
 
 
 class LoginWindow(QDialog):
@@ -143,87 +70,106 @@ class LoginWindow(QDialog):
         self.setup_ui()
 
     def setup_ui(self):
-        """Initialize login UI with modern security-focused design"""
-        self.setWindowTitle("SecurePass - Secure Authentication")
-        self.setFixedSize(520, 650)
+        """Initialize cybersecurity-themed login UI"""
+        self.setWindowTitle("⚡ SECUREPASS - CYBER DEFENSE SYSTEM ⚡")
+        self.setFixedSize(550, 650)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowTitleHint)
 
-        # Apply modern security-themed dark theme
+        # Apply cybersecurity dark theme with neon effects
         self.setStyleSheet("""
             QDialog {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0f1419, stop:0.5 #1a1f2e, stop:1 #0f1419);
-                color: #e0e6ed;
-                font-family: 'Segoe UI', 'San Francisco', Arial;
-                border: 2px solid #2d3748;
-                border-radius: 15px;
+                    stop:0 #000814, stop:0.3 #001d3d, stop:0.7 #003566, stop:1 #000814);
+                color: #00f5ff;
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                border: 3px solid #00f5ff;
+                border-radius: 8px;
+                background-image: 
+                    radial-gradient(circle at 20% 50%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(57, 255, 20, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
             }
             QLabel {
-                color: #e0e6ed;
+                color: #00f5ff;
                 font-size: 12pt;
                 background: transparent;
-                padding: 5px;
-                min-height: 25px;
+                font-weight: bold;
+                text-shadow: 0 0 10px #00f5ff;
             }
             QLineEdit {
-                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #2d3748, stop:1 #1a202c);
-                border: 2px solid #4a5568;
-                border-radius: 10px;
-                padding: 18px 22px;
-                color: #e0e6ed;
-                font-size: 13pt;
-                min-height: 20px;
-                selection-background-color: #0d7377;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 rgba(0, 0, 0, 0.8), stop:1 rgba(0, 20, 40, 0.8));
+                border: 2px solid #39ff14;
+                border-radius: 6px;
+                padding: 12px 16px;
+                color: #00f5ff;
+                font-size: 11pt;
+                font-family: 'Consolas', monospace;
+                selection-background-color: #39ff14;
+                font-weight: bold;
             }
             QLineEdit:focus {
-                border: 2px solid #0d7377;
-                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #0d7377, stop:0.1 #2d3748, stop:1 #1a202c);
-                box-shadow: 0 0 20px rgba(13, 115, 119, 0.3);
+                border: 2px solid #00f5ff;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 rgba(0, 245, 255, 0.1), stop:1 rgba(0, 20, 40, 0.9));
+                box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+            }
+            QLineEdit::placeholder {
+                color: #39ff14;
+                font-style: italic;
             }
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
-                color: white;
-                border: none;
-                border-radius: 12px;
-                padding: 18px 28px;
+                    stop:0 rgba(57, 255, 20, 0.8), 
+                    stop:0.5 rgba(0, 245, 255, 0.8), 
+                    stop:1 rgba(57, 255, 20, 0.8));
+                color: #000814;
+                border: 2px solid #39ff14;
+                border-radius: 8px;
+                padding: 12px 20px;
                 font-weight: bold;
-                font-size: 14pt;
-                min-height: 25px;
+                font-size: 11pt;
+                font-family: 'Consolas', monospace;
+                min-height: 20px;
+                text-transform: uppercase;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #14a085, stop:0.5 #17c4a5, stop:1 #14a085);
+                    stop:0 rgba(0, 245, 255, 0.9), 
+                    stop:0.5 rgba(57, 255, 20, 0.9), 
+                    stop:1 rgba(0, 245, 255, 0.9));
+                box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
                 transform: translateY(-2px);
             }
             QPushButton:pressed {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #0a5f63, stop:0.5 #0d7377, stop:1 #0a5f63);
+                    stop:0 rgba(255, 20, 147, 0.8), 
+                    stop:1 rgba(57, 255, 20, 0.8));
                 transform: translateY(1px);
+                box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
             }
             QProgressBar {
-                border: 2px solid #4a5568;
-                border-radius: 8px;
+                border: 2px solid #39ff14;
+                border-radius: 6px;
                 text-align: center;
-                background: #1a202c;
-                height: 25px;
-                color: white;
+                background: rgba(0, 0, 0, 0.8);
+                height: 20px;
+                color: #00f5ff;
                 font-weight: bold;
+                font-family: 'Consolas', monospace;
             }
             QProgressBar::chunk {
-                border-radius: 6px;
+                border-radius: 4px;
                 margin: 1px;
             }
             QFrame#security_frame {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 rgba(45, 55, 72, 0.8), 
-                    stop:0.5 rgba(26, 32, 44, 0.9), 
-                    stop:1 rgba(45, 55, 72, 0.8));
-                border: 1px solid #4a5568;
-                border-radius: 15px;
-                padding: 20px;
+                    stop:0 rgba(0, 245, 255, 0.1), 
+                    stop:0.5 rgba(57, 255, 20, 0.1), 
+                    stop:1 rgba(0, 245, 255, 0.1));
+                border: 2px solid #00f5ff;
+                border-radius: 10px;
+                padding: 15px;
             }
         """)
 
@@ -243,44 +189,58 @@ class LoginWindow(QDialog):
         title_container = QVBoxLayout()
         title_container.setSpacing(10)
         
-        self.title = AnimatedLabel("�️ SecurePass")
+        self.title = AnimatedLabel("⚡ SECUREPASS ⚡")
         self.title.setAlignment(Qt.AlignCenter)
-        title_font = QFont("Segoe UI", 24, QFont.Bold)
+        title_font = QFont("Consolas", 28, QFont.Bold)
         self.title.setFont(title_font)
         self.title.setStyleSheet("""
-            color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
-            padding: 10px;
+            color: #00f5ff;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 rgba(0, 245, 255, 0.2), 
+                stop:0.5 rgba(57, 255, 20, 0.2), 
+                stop:1 rgba(0, 245, 255, 0.2));
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 8px;
+            text-shadow: 0 0 15px #00f5ff;
         """)
         title_container.addWidget(self.title)
         
-        # Animated subtitle
-        self.subtitle = AnimatedLabel("Professional Password Management" if not self.setup_mode else "Vault Initialization")
+        # Cyber subtitle with matrix effect
+        self.subtitle = AnimatedLabel("[CYBER DEFENSE PROTOCOL]" if not self.setup_mode else "[INITIALIZING SECURE VAULT]")
         self.subtitle.setAlignment(Qt.AlignCenter)
         self.subtitle.setStyleSheet("""
-            color: #a0aec0; 
-            font-size: 11pt; 
-            font-weight: 300;
+            color: #39ff14; 
+            font-size: 10pt; 
+            font-weight: bold;
+            font-family: 'Consolas', monospace;
             padding: 5px;
+            text-shadow: 0 0 8px #39ff14;
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid #39ff14;
+            border-radius: 4px;
         """)
         title_container.addWidget(self.subtitle)
         
         frame_layout.addLayout(title_container)
         frame_layout.addSpacing(15)
 
-        # Security status indicator
-        self.security_status = AnimatedLabel("🔒 Encrypted • 🔐 Secure • 🛡️ Protected")
+        # Cyber security status indicator
+        self.security_status = AnimatedLabel("⚡ ENCRYPTED ⚡ • 🔐 SECURE • ⛨ PROTECTED ⛨")
         self.security_status.setAlignment(Qt.AlignCenter)
         self.security_status.setStyleSheet("""
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(13, 115, 119, 0.2), 
-                stop:0.5 rgba(20, 160, 133, 0.3), 
-                stop:1 rgba(13, 115, 119, 0.2));
-            border: 1px solid #0d7377;
-            border-radius: 20px;
-            padding: 10px;
-            font-size: 10pt;
-            color: #81e6d9;
+                stop:0 rgba(0, 245, 255, 0.2), 
+                stop:0.5 rgba(57, 255, 20, 0.3), 
+                stop:1 rgba(0, 245, 255, 0.2));
+            border: 2px solid #00f5ff;
+            border-radius: 15px;
+            padding: 8px;
+            font-size: 9pt;
+            color: #00f5ff;
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00f5ff;
         """)
         frame_layout.addWidget(self.security_status)
         frame_layout.addSpacing(10)
@@ -289,15 +249,21 @@ class LoginWindow(QDialog):
         input_section = QVBoxLayout()
         input_section.setSpacing(15)
 
-        # Master password label
-        password_label = QLabel("🔑 Master Password")
-        password_label.setStyleSheet("font-weight: bold; font-size: 11pt; color: #e0e6ed;")
+        # Master password label with cyber styling
+        password_label = QLabel("⚡ MASTER ACCESS KEY ⚡")
+        password_label.setStyleSheet("""
+            font-weight: bold; 
+            font-size: 11pt; 
+            color: #00f5ff;
+            font-family: 'Consolas', monospace;
+            text-shadow: 0 0 8px #00f5ff;
+        """)
         input_section.addWidget(password_label)
 
-        # Password input with icon
+        # Password input with cyber styling
         self.password_input = QLineEdit()
         self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_input.setPlaceholderText("Enter your secure master password...")
+        self.password_input.setPlaceholderText(">>> ENTER SECURE ACCESS CREDENTIALS <<<")
         self.password_input.returnPressed.connect(self.handle_login)
         input_section.addWidget(self.password_input)
 
@@ -392,40 +358,53 @@ class LoginWindow(QDialog):
         QTimer.singleShot(600, lambda: self.info_label.fade_in(400))
 
     def update_strength(self):
-        """Update password strength indicator with enhanced styling"""
+        """Update password strength indicator with cyber styling"""
         if not self.setup_mode:
             return
 
         password = self.password_input.text()
         score, label, color = PasswordStrengthChecker.check_strength(password)
         
-        # Enhanced strength bar styling
+        # Cyber-enhanced strength bar styling
         self.strength_bar.setValue(score)
-        self.strength_label.setText(f"🎯 Strength: {label}")
+        self.strength_label.setText(f"⚡ SECURITY LEVEL: {label.upper()} ⚡")
         
-        # Color gradient based on strength
+        # Cyber color scheme based on strength
         if score < 25:
-            gradient_color = "#f56565"  # Red
-            text_color = "#feb2b2"
+            gradient_color = "#ff1744"  # Cyber Red
+            text_color = "#ff5722"
+            glow_color = "#ff1744"
         elif score < 50:
-            gradient_color = "#ed8936"  # Orange
-            text_color = "#fbd38d"
+            gradient_color = "#ff9800"  # Cyber Orange
+            text_color = "#ffb74d"
+            glow_color = "#ff9800"
         elif score < 75:
-            gradient_color = "#ecc94b"  # Yellow
-            text_color = "#f6e05e"
+            gradient_color = "#ffeb3b"  # Cyber Yellow
+            text_color = "#fff176"
+            glow_color = "#ffeb3b"
         else:
-            gradient_color = "#48bb78"  # Green
-            text_color = "#9ae6b4"
+            gradient_color = "#39ff14"  # Cyber Green
+            text_color = "#76ff03"
+            glow_color = "#39ff14"
             
         self.strength_bar.setStyleSheet(f"""
             QProgressBar::chunk {{
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 {gradient_color}, stop:1 rgba(255,255,255,0.3));
-                border-radius: 6px;
+                    stop:0 {gradient_color}, 
+                    stop:0.5 rgba(0, 245, 255, 0.5), 
+                    stop:1 {gradient_color});
+                border-radius: 4px;
                 margin: 1px;
+                box-shadow: 0 0 15px {glow_color};
             }}
         """)
-        self.strength_label.setStyleSheet(f"font-size: 9pt; color: {text_color}; font-weight: bold;")
+        self.strength_label.setStyleSheet(f"""
+            font-size: 9pt; 
+            color: {text_color}; 
+            font-weight: bold;
+            font-family: 'Consolas', monospace;
+            text-shadow: 0 0 8px {glow_color};
+        """)
 
     def handle_login(self):
         """Handle login or initial setup"""
