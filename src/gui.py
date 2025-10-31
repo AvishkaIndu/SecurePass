@@ -30,8 +30,8 @@ class MainWindow(QMainWindow):
         self.start_auto_lock(300000)  # 5 minutes
     
     def setup_ui(self):
-        """Initialize UI with simple cybersecurity design"""
-        self.setWindowTitle("CyberVault - Password Management System")
+        """Initialize UI components with enhanced security design"""
+        self.setWindowTitle("🛡️ SecurePass - Professional Password Manager")
         self.setGeometry(100, 100, 1200, 700)
         self.apply_dark_theme()
         
@@ -42,61 +42,66 @@ class MainWindow(QMainWindow):
         layout.setSpacing(15)
         layout.setContentsMargins(20, 20, 20, 20)
         
-        # Simple cyber header
+        # Security header with status indicators
         header_layout = QHBoxLayout()
         
-        # System status - simplified
-        status_panel = QWidget()
-        status_panel.setObjectName("status_panel")
-        status_panel.setStyleSheet("""
-            QWidget#status_panel {
+        # Security status panel
+        security_panel = QWidget()
+        security_panel.setObjectName("security_panel")
+        security_panel.setStyleSheet("""
+            QWidget#security_panel {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 rgba(0, 255, 65, 0.1), 
-                    stop:1 rgba(0, 255, 65, 0.05));
-                border: 2px solid #00ff41;
-                border-radius: 0px;
+                    stop:0 rgba(13, 115, 119, 0.2), 
+                    stop:0.5 rgba(20, 160, 133, 0.3), 
+                    stop:1 rgba(13, 115, 119, 0.2));
+                border: 1px solid #0d7377;
+                border-radius: 10px;
                 padding: 10px;
             }
         """)
-        status_layout = QHBoxLayout(status_panel)
+        security_layout = QHBoxLayout(security_panel)
         
-        vault_status = QLabel("[VAULT] ENCRYPTED")
-        vault_status.setStyleSheet("color: #00ff88; font-weight: bold; font-size: 10pt;")
-        status_layout.addWidget(vault_status)
+        vault_status = QLabel("🔒 Vault: ENCRYPTED")
+        vault_status.setStyleSheet("color: #81e6d9; font-weight: bold; font-size: 10pt;")
+        security_layout.addWidget(vault_status)
         
-        session_status = QLabel("[SESSION] ACTIVE")
-        session_status.setStyleSheet("color: #00ff00; font-weight: bold; font-size: 10pt;")
-        status_layout.addWidget(session_status)
+        session_status = QLabel("🟢 Session: ACTIVE")
+        session_status.setStyleSheet("color: #68d391; font-weight: bold; font-size: 10pt;")
+        security_layout.addWidget(session_status)
         
-        header_layout.addWidget(status_panel)
+        encryption_status = QLabel("🛡️ AES-256 Protected")
+        encryption_status.setStyleSheet("color: #90cdf4; font-weight: bold; font-size: 10pt;")
+        security_layout.addWidget(encryption_status)
+        
+        header_layout.addWidget(security_panel)
         header_layout.addStretch()
         
-        # Simple search and controls
-        controls_layout = QHBoxLayout()
+        # Search and lock section
+        search_lock_layout = QHBoxLayout()
         
-        # Search bar - simplified
+        # Enhanced search bar
         self.search_box = QLineEdit()
-        self.search_box.setPlaceholderText("[SEARCH] Enter credentials filter...")
+        self.search_box.setPlaceholderText("🔍 Search your encrypted credentials...")
         self.search_box.textChanged.connect(self.search_credentials)
-        self.search_box.setMinimumHeight(35)
-        controls_layout.addWidget(self.search_box)
+        self.search_box.setMinimumHeight(40)
+        search_lock_layout.addWidget(self.search_box)
         
-        # Lock button
-        lock_btn = QPushButton("[LOCK] VAULT")
+        # Lock button with security styling
+        lock_btn = QPushButton("🔒 Lock Vault")
         lock_btn.clicked.connect(self.lock_vault)
         lock_btn.setProperty("class", "danger")
-        lock_btn.setMinimumHeight(35)
+        lock_btn.setMinimumHeight(40)
         lock_btn.setMaximumWidth(120)
-        controls_layout.addWidget(lock_btn)
+        search_lock_layout.addWidget(lock_btn)
         
-        header_layout.addLayout(controls_layout)
+        header_layout.addLayout(search_lock_layout)
         layout.addLayout(header_layout)
         
-        # Data table - simplified
+        # Credentials table with enhanced styling
         self.table = QTableWidget()
         self.table.setColumnCount(5)
         self.table.setHorizontalHeaderLabels([
-            "[SERVICE]", "[USER]", "[CATEGORY]", "[MODIFIED]", "[ACTIONS]"
+            "🏢 Service", "👤 Username", "📁 Category", "📅 Last Modified", "🔧 Actions"
         ])
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
@@ -106,59 +111,70 @@ class MainWindow(QMainWindow):
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
-        self.table.setMinimumHeight(350)
+        self.table.setMinimumHeight(300)
+        
+        # Add hover effects for table
+        self.table.setMouseTracking(True)
+        self.table.cellEntered.connect(self.on_cell_hover)
+        
         layout.addWidget(self.table)
         
-        # Simple button layout
+        # Enhanced button bar with sections
         btn_frame = QWidget()
         btn_frame.setStyleSheet("""
             QWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 rgba(0, 255, 65, 0.05), 
-                    stop:1 rgba(0, 255, 65, 0.02));
-                border: 2px solid #00ff41;
-                border-radius: 0px;
-                padding: 15px;
+                    stop:0 rgba(45, 55, 72, 0.5), 
+                    stop:1 rgba(26, 32, 44, 0.5));
+                border: 1px solid #4a5568;
+                border-radius: 10px;
+                padding: 10px;
             }
         """)
         btn_layout = QHBoxLayout(btn_frame)
         
-        # Core functions - simplified
-        add_btn = QPushButton("[ADD] NEW ENTRY")
+        # Credential management section
+        cred_section = QLabel("📋 Credential Management:")
+        cred_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        btn_layout.addWidget(cred_section)
+        
+        add_btn = QPushButton("➕ Add New")
         add_btn.clicked.connect(self.add_credential)
         btn_layout.addWidget(add_btn)
         
-        edit_btn = QPushButton("[EDIT] ENTRY")
+        edit_btn = QPushButton("✏️ Edit")
         edit_btn.clicked.connect(self.edit_credential)
         btn_layout.addWidget(edit_btn)
         
-        delete_btn = QPushButton("[DELETE] ENTRY")
+        delete_btn = QPushButton("🗑️ Delete")
         delete_btn.clicked.connect(self.delete_credential)
         delete_btn.setProperty("class", "danger")
         btn_layout.addWidget(delete_btn)
         
-        # Separator
-        separator = QLabel(" | ")
-        separator.setStyleSheet("color: #00ff41; font-size: 12pt; font-weight: bold;")
-        btn_layout.addWidget(separator)
+        btn_layout.addWidget(QLabel(" | "))  # Separator
         
-        # Tools
-        gen_btn = QPushButton("[GENERATE] PASSWORD")
+        # Security tools section
+        tools_section = QLabel("🔧 Security Tools:")
+        tools_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        btn_layout.addWidget(tools_section)
+        
+        gen_btn = QPushButton("🎲 Generate Password")
         gen_btn.clicked.connect(self.show_generator)
         btn_layout.addWidget(gen_btn)
         
-        # Separator
-        separator2 = QLabel(" | ")
-        separator2.setStyleSheet("color: #00ff41; font-size: 12pt; font-weight: bold;")
-        btn_layout.addWidget(separator2)
+        btn_layout.addWidget(QLabel(" | "))  # Separator
         
-        # Data operations
-        export_btn = QPushButton("[EXPORT] DATA")
+        # Data management section
+        data_section = QLabel("💾 Data Management:")
+        data_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        btn_layout.addWidget(data_section)
+        
+        export_btn = QPushButton("💾 Export")
         export_btn.clicked.connect(self.export_data)
         export_btn.setProperty("class", "secondary")
         btn_layout.addWidget(export_btn)
         
-        import_btn = QPushButton("[IMPORT] DATA")
+        import_btn = QPushButton("📂 Import")
         import_btn.clicked.connect(self.import_data)
         import_btn.setProperty("class", "secondary")
         btn_layout.addWidget(import_btn)
@@ -166,207 +182,187 @@ class MainWindow(QMainWindow):
         btn_layout.addStretch()
         layout.addWidget(btn_frame)
         
-        # Simple status bar
-        status_text = "[SYSTEM] READY | [CRYPTO] AES-256 ACTIVE | [AUTO-LOCK] 5 MIN"
+        # Enhanced status bar
+        status_text = "🟢 Ready | 🔒 Auto-lock in 5 minutes | 🛡️ All data encrypted with AES-256"
         self.statusBar().showMessage(status_text)
     
     def apply_dark_theme(self):
-        """Apply cybersecurity-focused theme with terminal aesthetics"""
+        """Apply modern security-focused dark theme with gradients and effects"""
         self.setStyleSheet("""
-            /* Cybersecurity Main Window */
+            /* Main Window Styling */
             QMainWindow, QWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0a0a0a, stop:0.3 #1a1a2e, stop:0.7 #16213e, stop:1 #0a0a0a);
-                color: #00ff00;
-                font-family: 'Consolas', 'Courier New', monospace;
+                    stop:0 #0f1419, stop:0.3 #1a1f2e, stop:0.7 #1a1f2e, stop:1 #0f1419);
+                color: #e2e8f0;
+                font-family: 'Segoe UI', 'San Francisco', Arial;
                 font-size: 10pt;
             }
             
-            /* Terminal-style Input Fields */
+            /* Search Bar Styling */
             QLineEdit {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #002200);
-                border: 2px solid #00ff41;
-                border-radius: 0px;
-                padding: 10px 12px;
-                color: #00ff00;
+                    stop:0 #2d3748, stop:1 #1a202c);
+                border: 2px solid #4a5568;
+                border-radius: 8px;
+                padding: 12px 16px;
+                color: #e2e8f0;
                 font-size: 11pt;
-                font-family: 'Consolas', monospace;
-                selection-background-color: #00ff41;
-                selection-color: #000000;
+                selection-background-color: #0d7377;
             }
             QLineEdit:focus {
-                border: 2px solid #00ff88;
+                border: 2px solid #0d7377;
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #002200, stop:1 #001a00);
-                box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+                    stop:0 #0d7377, stop:0.1 #2d3748, stop:1 #1a202c);
+                box-shadow: 0 0 15px rgba(13, 115, 119, 0.4);
             }
             QLineEdit::placeholder {
-                color: #006600;
+                color: #718096;
                 font-style: italic;
             }
             
-            /* Cyber Text Areas */
+            /* Text Area Styling */
             QTextEdit {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #002200);
-                border: 2px solid #00ff41;
-                border-radius: 0px;
-                padding: 10px;
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
-                selection-background-color: #00ff41;
-                selection-color: #000000;
+                    stop:0 #2d3748, stop:1 #1a202c);
+                border: 2px solid #4a5568;
+                border-radius: 8px;
+                padding: 12px;
+                color: #e2e8f0;
+                selection-background-color: #0d7377;
             }
             QTextEdit:focus {
-                border: 2px solid #00ff88;
-                box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+                border: 2px solid #0d7377;
             }
             
-            /* Cyber ComboBox */
+            /* ComboBox Styling */
             QComboBox {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #002200);
-                border: 2px solid #00ff41;
-                border-radius: 0px;
+                    stop:0 #2d3748, stop:1 #1a202c);
+                border: 2px solid #4a5568;
+                border-radius: 8px;
                 padding: 8px 12px;
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
+                color: #e2e8f0;
                 min-width: 120px;
             }
             QComboBox:focus {
-                border: 2px solid #00ff88;
+                border: 2px solid #0d7377;
             }
             QComboBox::drop-down {
                 border: none;
-                width: 25px;
+                width: 30px;
             }
             QComboBox::down-arrow {
                 image: none;
-                border: 4px solid transparent;
-                border-top: 6px solid #00ff41;
-                margin-right: 8px;
+                border: 5px solid transparent;
+                border-top: 8px solid #718096;
+                margin-right: 10px;
             }
             QComboBox QAbstractItemView {
-                background: #001100;
-                border: 2px solid #00ff41;
-                selection-background-color: #00ff41;
-                selection-color: #000000;
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
+                background: #2d3748;
+                border: 1px solid #4a5568;
+                selection-background-color: #0d7377;
+                color: #e2e8f0;
             }
             
             /* SpinBox Styling */
             QSpinBox {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #002200);
-                border: 2px solid #00ff41;
-                border-radius: 0px;
+                    stop:0 #2d3748, stop:1 #1a202c);
+                border: 2px solid #4a5568;
+                border-radius: 8px;
                 padding: 8px 12px;
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
+                color: #e2e8f0;
             }
             QSpinBox:focus {
-                border: 2px solid #00ff88;
+                border: 2px solid #0d7377;
             }
             
-            /* Cyber Button Styling */
+            /* Enhanced Button Styling */
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #003300, stop:0.5 #00ff41, stop:1 #003300);
-                color: #000000;
-                border: 2px solid #00ff41;
-                border-radius: 0px;
-                padding: 10px 16px;
+                    stop:0 #0d7377, stop:0.5 #14a085, stop:1 #0d7377);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 20px;
                 font-weight: bold;
                 font-size: 10pt;
-                font-family: 'Consolas', monospace;
                 min-height: 15px;
-                text-transform: uppercase;
+                transition: all 0.3s ease;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #00ff41, stop:0.5 #66ff88, stop:1 #00ff41);
-                box-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
-                color: #000000;
+                    stop:0 #14a085, stop:0.5 #17c4a5, stop:1 #14a085);
+                box-shadow: 0 4px 15px rgba(20, 160, 133, 0.3);
+                transform: translateY(-2px);
             }
             QPushButton:pressed {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #002200, stop:0.5 #00aa22, stop:1 #002200);
-                color: #00ff00;
+                    stop:0 #0a5f63, stop:0.5 #0d7377, stop:1 #0a5f63);
+                transform: translateY(1px);
+                box-shadow: 0 2px 8px rgba(10, 95, 99, 0.4);
             }
             
             /* Special Button Variants */
             QPushButton[class="danger"] {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #330000, stop:0.5 #ff0040, stop:1 #330000);
-                border-color: #ff0040;
-                color: #ffffff;
+                    stop:0 #e53e3e, stop:0.5 #f56565, stop:1 #e53e3e);
             }
             QPushButton[class="danger"]:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #ff0040, stop:0.5 #ff4080, stop:1 #ff0040);
-                box-shadow: 0 0 10px rgba(255, 0, 64, 0.6);
+                    stop:0 #f56565, stop:0.5 #fc8181, stop:1 #f56565);
             }
             
             QPushButton[class="secondary"] {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001a33, stop:0.5 #0066ff, stop:1 #001a33);
-                border-color: #0066ff;
-                color: #ffffff;
+                    stop:0 #4a5568, stop:0.5 #718096, stop:1 #4a5568);
             }
             QPushButton[class="secondary"]:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #0066ff, stop:0.5 #4088ff, stop:1 #0066ff);
-                box-shadow: 0 0 10px rgba(0, 102, 255, 0.6);
+                    stop:0 #718096, stop:0.5 #a0aec0, stop:1 #718096);
             }
             
-            /* Cyber Table Styling */
+            /* Enhanced Table Styling */
             QTableWidget {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #000a00);
-                alternate-background-color: rgba(0, 255, 65, 0.05);
-                gridline-color: #00ff41;
-                border: 2px solid #00ff41;
-                border-radius: 0px;
-                selection-background-color: rgba(0, 255, 65, 0.3);
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
+                    stop:0 #2d3748, stop:1 #1a202c);
+                alternate-background-color: rgba(74, 85, 104, 0.3);
+                gridline-color: #4a5568;
+                border: 2px solid #4a5568;
+                border-radius: 10px;
+                selection-background-color: rgba(13, 115, 119, 0.4);
             }
             QTableWidget::item {
-                padding: 10px 8px;
-                border-bottom: 1px solid #00ff41;
-                color: #00ff00;
+                padding: 12px 8px;
+                border-bottom: 1px solid #4a5568;
+                color: #e2e8f0;
             }
             QTableWidget::item:selected {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 rgba(0, 255, 65, 0.4), 
-                    stop:1 rgba(0, 255, 65, 0.2));
-                color: #000000;
+                    stop:0 rgba(13, 115, 119, 0.6), 
+                    stop:1 rgba(20, 160, 133, 0.4));
+                color: white;
                 font-weight: bold;
             }
             QTableWidget::item:hover {
-                background: rgba(0, 255, 65, 0.1);
+                background: rgba(13, 115, 119, 0.2);
             }
             
-            /* Cyber Header Styling */
+            /* Enhanced Header Styling */
             QHeaderView::section {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #000a00, stop:1 #001100);
-                color: #00ff88;
-                padding: 12px 8px;
+                    stop:0 #1a202c, stop:1 #0f1419);
+                color: #e2e8f0;
+                padding: 15px 8px;
                 border: none;
-                border-bottom: 3px solid #00ff41;
-                border-right: 1px solid #00ff41;
+                border-bottom: 3px solid #0d7377;
+                border-right: 1px solid #4a5568;
                 font-weight: bold;
                 font-size: 11pt;
-                font-family: 'Consolas', monospace;
-                text-transform: uppercase;
             }
             QHeaderView::section:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #001100, stop:1 #002200);
-                color: #00ff00;
+                    stop:0 #2d3748, stop:1 #1a202c);
             }
             QHeaderView::section:first {
                 border-left: none;
@@ -375,47 +371,44 @@ class MainWindow(QMainWindow):
                 border-right: none;
             }
             
-            /* Cyber Progress Bar */
+            /* Progress Bar Enhancement */
             QProgressBar {
-                border: 2px solid #00ff41;
-                border-radius: 0px;
+                border: 2px solid #4a5568;
+                border-radius: 8px;
                 text-align: center;
-                background: #001100;
+                background: #1a202c;
                 height: 25px;
-                color: #00ff00;
+                color: white;
                 font-weight: bold;
                 font-size: 10pt;
-                font-family: 'Consolas', monospace;
             }
             QProgressBar::chunk {
-                border-radius: 0px;
+                border-radius: 6px;
                 margin: 1px;
             }
             
-            /* Cyber Status Bar */
+            /* Status Bar Enhancement */
             QStatusBar {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #000a00, stop:1 #001100);
-                border-top: 2px solid #00ff41;
-                color: #00ff88;
+                    stop:0 #1a202c, stop:1 #2d3748);
+                border-top: 2px solid #4a5568;
+                color: #a0aec0;
                 padding: 8px;
                 font-size: 9pt;
-                font-family: 'Consolas', monospace;
             }
             
             /* Dialog Enhancements */
             QDialog {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0a0a0a, stop:0.3 #1a1a2e, stop:0.7 #16213e, stop:1 #0a0a0a);
-                border: 3px solid #00ff41;
-                border-radius: 0px;
+                    stop:0 #0f1419, stop:0.5 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #4a5568;
+                border-radius: 15px;
             }
             
             /* Message Box Styling */
             QMessageBox {
-                background: #001100;
-                color: #00ff00;
-                font-family: 'Consolas', monospace;
+                background: #1a202c;
+                color: #e2e8f0;
             }
             QMessageBox QPushButton {
                 min-width: 80px;
@@ -424,18 +417,17 @@ class MainWindow(QMainWindow):
             
             /* Scroll Bar Styling */
             QScrollBar:vertical {
-                background: #001100;
-                width: 15px;
-                border-radius: 0px;
-                border: 1px solid #00ff41;
+                background: #2d3748;
+                width: 12px;
+                border-radius: 6px;
             }
             QScrollBar::handle:vertical {
-                background: #00ff41;
-                border-radius: 0px;
+                background: #4a5568;
+                border-radius: 6px;
                 min-height: 20px;
             }
             QScrollBar::handle:vertical:hover {
-                background: #00ff88;
+                background: #0d7377;
             }
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
                 border: none;
@@ -444,13 +436,13 @@ class MainWindow(QMainWindow):
             }
         """)
         
-        # Add cyber glow effect
+        # Add window shadow effect
         try:
             shadow = QGraphicsDropShadowEffect()
-            shadow.setBlurRadius(20)
+            shadow.setBlurRadius(30)
             shadow.setXOffset(0)
-            shadow.setYOffset(0)
-            shadow.setColor(QColor(0, 255, 65, 80))
+            shadow.setYOffset(10)
+            shadow.setColor(QColor(0, 0, 0, 100))
             self.setGraphicsEffect(shadow)
         except:
             pass  # Fallback if effects not available
@@ -679,26 +671,25 @@ class CredentialDialog(QDialog):
         self.setup_ui()
     
     def setup_ui(self):
-        """Setup credential dialog with simple cyber styling"""
-        title = "[ADD] NEW CREDENTIAL" if self.mode == "add" else "[EDIT] CREDENTIAL"
+        """Setup credential dialog UI with enhanced security styling"""
+        title = "🔐 Add Secure Credential" if self.mode == "add" else "✏️ Edit Credential"
         self.setWindowTitle(title)
         self.setModal(True)
         self.setMinimumWidth(600)
-        self.setMinimumHeight(600)
+        self.setMinimumHeight(700)
         
-        # Apply cyber dialog styling
+        # Apply enhanced dialog styling
         self.setStyleSheet("""
             QDialog {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0a0a0a, stop:0.3 #1a1a2e, stop:0.7 #16213e, stop:1 #0a0a0a);
-                border: 3px solid #00ff41;
-                border-radius: 0px;
+                    stop:0 #0f1419, stop:0.5 #1a1f2e, stop:1 #0f1419);
+                border: 2px solid #4a5568;
+                border-radius: 15px;
             }
             QLabel {
-                color: #00ff00;
+                color: #e2e8f0;
                 font-weight: bold;
                 font-size: 11pt;
-                font-family: 'Consolas', monospace;
                 padding: 5px 0;
             }
             QFormLayout {
@@ -710,37 +701,38 @@ class CredentialDialog(QDialog):
         layout.setSpacing(20)
         layout.setContentsMargins(30, 30, 30, 30)
         
-        # Header
-        header = QLabel("[SYSTEM] CREDENTIAL DATA ENTRY")
-        header.setAlignment(Qt.AlignCenter)
-        header.setStyleSheet("""
+        # Security header
+        security_header = QLabel("🛡️ SECURE CREDENTIAL STORAGE")
+        security_header.setAlignment(Qt.AlignCenter)
+        security_header.setStyleSheet("""
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(0, 255, 65, 0.2), 
-                stop:1 rgba(0, 255, 65, 0.1));
-            border: 2px solid #00ff41;
-            border-radius: 0px;
-            padding: 12px;
+                stop:0 rgba(13, 115, 119, 0.3), 
+                stop:0.5 rgba(20, 160, 133, 0.4), 
+                stop:1 rgba(13, 115, 119, 0.3));
+            border: 1px solid #0d7377;
+            border-radius: 10px;
+            padding: 15px;
             font-size: 12pt;
             font-weight: bold;
-            color: #00ff88;
-            margin-bottom: 15px;
+            color: #81e6d9;
+            margin-bottom: 20px;
         """)
-        layout.addRow(header)
+        layout.addRow(security_header)
         
-        # Service field
-        service_label = QLabel("[INPUT] SERVICE_NAME:")
+        # Service field with icon
+        service_label = QLabel("🏢 Service/Website:")
         self.service_edit = QLineEdit()
         self.service_edit.setPlaceholderText("e.g., Gmail, GitHub, Banking...")
         layout.addRow(service_label, self.service_edit)
         
-        # Username field
-        username_label = QLabel("[INPUT] USERNAME:")
+        # Username field with icon
+        username_label = QLabel("👤 Username/Email:")
         self.username_edit = QLineEdit()
-        self.username_edit.setPlaceholderText("Username or email address...")
+        self.username_edit.setPlaceholderText("Your username or email address...")
         layout.addRow(username_label, self.username_edit)
         
-        # Password field with controls
-        password_label = QLabel("[INPUT] PASSWORD:")
+        # Password field with enhanced controls
+        password_label = QLabel("🔐 Password:")
         pw_container = QWidget()
         pw_layout = QHBoxLayout(pw_container)
         pw_layout.setContentsMargins(0, 0, 0, 0)
@@ -751,23 +743,25 @@ class CredentialDialog(QDialog):
         self.password_edit.textChanged.connect(self.update_strength)
         pw_layout.addWidget(self.password_edit)
         
-        # Show button
-        show_btn = QPushButton("[SHOW]")
-        show_btn.setMaximumWidth(60)
+        # Show/hide password button
+        show_btn = QPushButton("👁️")
+        show_btn.setMaximumWidth(40)
+        show_btn.setToolTip("Show/Hide Password")
         show_btn.pressed.connect(lambda: self.password_edit.setEchoMode(QLineEdit.Normal))
         show_btn.released.connect(lambda: self.password_edit.setEchoMode(QLineEdit.Password))
         pw_layout.addWidget(show_btn)
         
-        # Generate button
-        gen_btn = QPushButton("[GEN]")
-        gen_btn.setMaximumWidth(50)
+        # Generate password button
+        gen_btn = QPushButton("🎲")
+        gen_btn.setMaximumWidth(40)
+        gen_btn.setToolTip("Generate Secure Password")
         gen_btn.clicked.connect(self.generate_password)
         pw_layout.addWidget(gen_btn)
         
         layout.addRow(password_label, pw_container)
         
-        # Strength meter
-        strength_label = QLabel("[ANALYSIS] SECURITY_LEVEL:")
+        # Enhanced strength meter
+        strength_label = QLabel("🎯 Password Security Analysis:")
         strength_container = QWidget()
         strength_layout = QVBoxLayout(strength_container)
         strength_layout.setContentsMargins(0, 0, 0, 0)
@@ -777,63 +771,63 @@ class CredentialDialog(QDialog):
         self.strength_bar.setMinimumHeight(25)
         strength_layout.addWidget(self.strength_bar)
         
-        self.strength_label = QLabel("[STATUS] ANALYZING...")
-        self.strength_label.setStyleSheet("font-size: 9pt; color: #00ff88; padding: 5px; font-family: 'Consolas', monospace;")
+        self.strength_label = QLabel("💭 Enter password to analyze security strength")
+        self.strength_label.setStyleSheet("font-size: 9pt; color: #718096; padding: 5px;")
         self.strength_label.setAlignment(Qt.AlignCenter)
         strength_layout.addWidget(self.strength_label)
         
         layout.addRow(strength_label, strength_container)
         
-        # URL field
-        url_label = QLabel("[OPTIONAL] URL:")
+        # URL field with icon
+        url_label = QLabel("🌐 Website URL:")
         self.url_edit = QLineEdit()
-        self.url_edit.setPlaceholderText("https://example.com")
+        self.url_edit.setPlaceholderText("https://example.com (optional)")
         layout.addRow(url_label, self.url_edit)
         
-        # Category field
-        category_label = QLabel("[CATEGORY] TYPE:")
+        # Category field with enhanced combo
+        category_label = QLabel("📁 Category:")
         self.category_combo = QComboBox()
-        categories = ["GENERAL", "EMAIL", "SOCIAL", "BANKING", "WORK", "SHOPPING", "GAMING", "OTHER"]
+        categories = ["🔒 General", "📧 Email", "📱 Social", "🏦 Banking", 
+                     "💼 Work", "🛒 Shopping", "🎮 Gaming", "📚 Other"]
         self.category_combo.addItems(categories)
         layout.addRow(category_label, self.category_combo)
         
-        # Notes field
-        notes_label = QLabel("[NOTES] ENCRYPTED_DATA:")
+        # Notes field with encryption notice
+        notes_label = QLabel("📝 Secure Notes:")
         notes_container = QWidget()
         notes_layout = QVBoxLayout(notes_container)
         notes_layout.setContentsMargins(0, 0, 0, 0)
         
         self.notes_edit = QTextEdit()
-        self.notes_edit.setMaximumHeight(80)
-        self.notes_edit.setPlaceholderText("Additional secure notes...")
+        self.notes_edit.setMaximumHeight(100)
+        self.notes_edit.setPlaceholderText("Additional secure notes (encrypted)...")
         notes_layout.addWidget(self.notes_edit)
         
-        encryption_notice = QLabel("[CRYPTO] AES-256 ENCRYPTION ACTIVE")
+        encryption_notice = QLabel("🔒 All notes are encrypted with AES-256")
         encryption_notice.setStyleSheet("""
-            background: rgba(0, 255, 65, 0.1);
-            border: 1px solid #00ff41;
-            border-radius: 0px;
+            background: rgba(13, 115, 119, 0.2);
+            border: 1px solid #0d7377;
+            border-radius: 5px;
             padding: 8px;
             font-size: 8pt;
-            color: #00ff88;
-            font-family: 'Consolas', monospace;
+            color: #81e6d9;
         """)
         encryption_notice.setAlignment(Qt.AlignCenter)
         notes_layout.addWidget(encryption_notice)
         
         layout.addRow(notes_label, notes_container)
         
-        # Action buttons
+        # Enhanced action buttons
         btn_container = QWidget()
         btn_layout = QHBoxLayout(btn_container)
         btn_layout.setContentsMargins(0, 20, 0, 0)
         
-        save_btn = QPushButton("[SAVE] CREDENTIAL")
+        save_btn = QPushButton("💾 Save Securely")
         save_btn.clicked.connect(self.accept)
         save_btn.setMinimumHeight(40)
         btn_layout.addWidget(save_btn)
         
-        cancel_btn = QPushButton("[CANCEL] OPERATION")
+        cancel_btn = QPushButton("❌ Cancel")
         cancel_btn.clicked.connect(self.reject)
         cancel_btn.setProperty("class", "secondary")
         cancel_btn.setMinimumHeight(40)
@@ -852,11 +846,12 @@ class CredentialDialog(QDialog):
                 pass
             self.url_edit.setText(self.credential.get('url', ''))
             
-            # Match category
-            category = self.credential.get('category', 'GENERAL').upper()
-            index = self.category_combo.findText(category)
-            if index >= 0:
-                self.category_combo.setCurrentIndex(index)
+            # Match category with icon
+            category = self.credential.get('category', 'General')
+            for i in range(self.category_combo.count()):
+                if category.lower() in self.category_combo.itemText(i).lower():
+                    self.category_combo.setCurrentIndex(i)
+                    break
                     
             try:
                 notes = self.crypto.decrypt(self.credential.get('notes_encrypted', ''))
@@ -870,50 +865,25 @@ class CredentialDialog(QDialog):
         self.password_edit.setText(pwd)
     
     def update_strength(self):
-        """Update password strength with cyber styling"""
+        """Update password strength indicator"""
         password = self.password_edit.text()
         score, label, color = PasswordStrengthChecker.check_strength(password)
-        
-        # Cyber-themed strength messages
         self.strength_bar.setValue(score)
-        
-        if score < 25:
-            cyber_label = "[WEAK] VULNERABILITY DETECTED"
-            gradient_color = "#ff0040"
-            text_color = "#ff4080"
-        elif score < 50:
-            cyber_label = "[MODERATE] SECURITY ACCEPTABLE"
-            gradient_color = "#ff8000"
-            text_color = "#ffaa40"
-        elif score < 75:
-            cyber_label = "[STRONG] GOOD PROTECTION"
-            gradient_color = "#ffff00"
-            text_color = "#ffff80"
-        else:
-            cyber_label = "[SECURE] MAXIMUM PROTECTION"
-            gradient_color = "#00ff40"
-            text_color = "#80ff80"
-            
-        self.strength_label.setText(cyber_label)
-        
-        self.strength_bar.setStyleSheet(f"""
-            QProgressBar::chunk {{
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 {gradient_color}, stop:1 rgba(0,255,65,0.3));
-                border-radius: 0px;
-                margin: 1px;
-            }}
-        """)
-        self.strength_label.setStyleSheet(f"font-size: 9pt; color: {text_color}; font-weight: bold; font-family: 'Consolas', monospace;")
+        self.strength_label.setText(label)
+        self.strength_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
     
     def get_data(self):
-        """Return form data"""
+        """Return form data with cleaned category"""
+        category_text = self.category_combo.currentText()
+        # Remove emoji and clean category text
+        category_clean = category_text.split(' ', 1)[-1] if ' ' in category_text else category_text
+        
         return {
             'service': self.service_edit.text(),
             'username': self.username_edit.text(),
             'password': self.password_edit.text(),
             'url': self.url_edit.text(),
-            'category': self.category_combo.currentText(),
+            'category': category_clean,
             'notes': self.notes_edit.toPlainText()
         }
 
