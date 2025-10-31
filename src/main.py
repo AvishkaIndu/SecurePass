@@ -1,18 +1,99 @@
-"""
-SecurePass Password Manager - Main Entry Point
-Handles initial setup, login, and application launch
-"""
 import sys
 from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout,
                              QLabel, QLineEdit, QPushButton, QMessageBox,
                              QProgressBar, QFrame, QGraphicsOpacityEffect,
                              QGraphicsDropShadowEffect)
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty
-from PyQt5.QtGui import QFont, QPalette, QLinearGradient, QBrush, QColor, QPainter
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty, QRect
+from PyQt5.QtGui import QFont, QPalette, QLinearGradient, QBrush, QColor, QPainter, QPen
 from crypto_lib import CryptoManager
 from db import DatabaseManager
 from gui import MainWindow
 from utils import PasswordStrengthChecker
+
+
+class CyberSecurityFrame(QFrame):
+    """Enhanced security frame with cyber animations"""
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFrameStyle(QFrame.NoFrame)
+        self.grid_alpha = 0.0
+        self.scan_position = 0
+        
+        # Add animated shadow effect
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(30)
+        shadow.setXOffset(0)
+        shadow.setYOffset(8)
+        shadow.setColor(QColor(13, 115, 119, 120))
+        self.setGraphicsEffect(shadow)
+        
+        # Start cyber animations
+        self.start_cyber_animations()
+    
+    def start_cyber_animations(self):
+        """Start cybersecurity-themed animations"""
+        # Grid animation
+        self.grid_timer = QTimer()
+        self.grid_timer.timeout.connect(self.animate_grid)
+        self.grid_timer.start(100)
+        
+        # Scanning animation
+        self.scan_timer = QTimer()
+        self.scan_timer.timeout.connect(self.animate_scan)
+        self.scan_timer.start(50)
+    
+    def animate_grid(self):
+        """Animate background grid effect"""
+        self.grid_alpha = (self.grid_alpha + 0.02) % 1.0
+        self.update()
+    
+    def animate_scan(self):
+        """Animate scanning line effect"""
+        self.scan_position = (self.scan_position + 2) % self.width()
+        self.update()
+    
+    def paintEvent(self, event):
+        """Custom paint event for cyber effects"""
+        super().paintEvent(event)
+        
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        
+        # Draw cyber grid pattern
+        grid_color = QColor(13, 115, 119, int(50 + 30 * self.grid_alpha))
+        painter.setPen(QPen(grid_color, 1))
+        
+        # Draw grid lines
+        for x in range(0, self.width(), 30):
+            painter.drawLine(x, 0, x, self.height())
+        for y in range(0, self.height(), 30):
+            painter.drawLine(0, y, self.width(), y)
+        
+        # Draw scanning line
+        scan_color = QColor(20, 160, 133, 150)
+        painter.setPen(QPen(scan_color, 2))
+        painter.drawLine(self.scan_position, 0, self.scan_position, self.height())
+        
+        # Draw corner brackets (cyber style)
+        bracket_color = QColor(13, 115, 119, 200)
+        painter.setPen(QPen(bracket_color, 3))
+        
+        # Top-left bracket
+        painter.drawLine(10, 10, 30, 10)
+        painter.drawLine(10, 10, 10, 30)
+        
+        # Top-right bracket
+        painter.drawLine(self.width() - 30, 10, self.width() - 10, 10)
+        painter.drawLine(self.width() - 10, 10, self.width() - 10, 30)
+        
+        # Bottom-left bracket
+        painter.drawLine(10, self.height() - 30, 10, self.height() - 10)
+        painter.drawLine(10, self.height() - 10, 30, self.height() - 10)
+        
+        # Bottom-right bracket
+        painter.drawLine(self.width() - 10, self.height() - 30, self.width() - 10, self.height() - 10)
+        painter.drawLine(self.width() - 30, self.height() - 10, self.width() - 10, self.height() - 10)
 
 
 class AnimatedLabel(QLabel):
@@ -43,20 +124,12 @@ class AnimatedLabel(QLabel):
         self.animation.start()
 
 
-class SecurityFrame(QFrame):
-    """Custom frame with security-themed styling"""
+class SecurityFrame(CyberSecurityFrame):
+    """Custom frame with enhanced cybersecurity styling and animations"""
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setFrameStyle(QFrame.NoFrame)
-        
-        # Add drop shadow effect
-        shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(25)
-        shadow.setXOffset(0)
-        shadow.setYOffset(5)
-        shadow.setColor(QColor(0, 0, 0, 80))
-        self.setGraphicsEffect(shadow)
+        # Additional security frame specific styling will be handled by CSS
 
 
 class LoginWindow(QDialog):
@@ -72,7 +145,7 @@ class LoginWindow(QDialog):
     def setup_ui(self):
         """Initialize login UI with modern security-focused design"""
         self.setWindowTitle("SecurePass - Secure Authentication")
-        self.setFixedSize(500, 600)
+        self.setFixedSize(520, 650)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowTitleHint)
 
         # Apply modern security-themed dark theme
@@ -89,15 +162,18 @@ class LoginWindow(QDialog):
                 color: #e0e6ed;
                 font-size: 12pt;
                 background: transparent;
+                padding: 5px;
+                min-height: 25px;
             }
             QLineEdit {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 10px;
-                padding: 15px 20px;
+                padding: 18px 22px;
                 color: #e0e6ed;
-                font-size: 12pt;
+                font-size: 13pt;
+                min-height: 20px;
                 selection-background-color: #0d7377;
             }
             QLineEdit:focus {
@@ -112,10 +188,10 @@ class LoginWindow(QDialog):
                 color: white;
                 border: none;
                 border-radius: 12px;
-                padding: 15px 25px;
+                padding: 18px 28px;
                 font-weight: bold;
-                font-size: 13pt;
-                min-height: 20px;
+                font-size: 14pt;
+                min-height: 25px;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,

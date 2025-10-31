@@ -8,12 +8,93 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                              QComboBox, QCheckBox, QSpinBox, QProgressBar, QInputDialog,
                              QFileDialog, QHeaderView, QGraphicsDropShadowEffect,
                              QGraphicsOpacityEffect)
-from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty
-from PyQt5.QtGui import QIcon, QFont, QPalette, QColor
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty, QRect
+from PyQt5.QtGui import QIcon, QFont, QPalette, QColor, QPainter, QPen
 import pyperclip
 from crypto_lib import CryptoManager
 from db import DatabaseManager
 from utils import PasswordGenerator, PasswordStrengthChecker, format_timestamp
+
+
+class CyberAnimatedWidget(QWidget):
+    """Widget with cybersecurity-themed animations"""
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.scan_position = 0
+        self.matrix_chars = []
+        self.setup_cyber_animations()
+    
+    def setup_cyber_animations(self):
+        """Initialize cyber animation timers"""
+        # Scanning line animation
+        self.scan_timer = QTimer()
+        self.scan_timer.timeout.connect(self.update_scan)
+        self.scan_timer.start(80)
+        
+        # Matrix effect timer
+        self.matrix_timer = QTimer()
+        self.matrix_timer.timeout.connect(self.update_matrix)
+        self.matrix_timer.start(150)
+        
+        # Initialize matrix characters
+        import random
+        for i in range(20):
+            self.matrix_chars.append({
+                'x': random.randint(0, 600),
+                'y': random.randint(0, 400),
+                'char': random.choice('01'),
+                'alpha': random.randint(50, 150)
+            })
+    
+    def update_scan(self):
+        """Update scanning animation"""
+        self.scan_position = (self.scan_position + 3) % (self.width() + 50)
+        self.update()
+    
+    def update_matrix(self):
+        """Update matrix effect"""
+        import random
+        for char in self.matrix_chars:
+            char['y'] = (char['y'] + random.randint(1, 3)) % self.height()
+            char['alpha'] = max(30, char['alpha'] - random.randint(1, 5))
+            if char['alpha'] <= 30:
+                char['alpha'] = 150
+                char['x'] = random.randint(0, self.width())
+                char['y'] = 0
+                char['char'] = random.choice('01')
+        self.update()
+    
+    def paintEvent(self, event):
+        """Custom paint with cyber effects"""
+        super().paintEvent(event)
+        
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        
+        # Draw matrix background
+        painter.setFont(QFont('Courier New', 8))
+        for char in self.matrix_chars:
+            color = QColor(13, 115, 119, char['alpha'])
+            painter.setPen(color)
+            painter.drawText(char['x'], char['y'], char['char'])
+        
+        # Draw scanning line
+        scan_color = QColor(20, 160, 133, 100)
+        painter.setPen(QPen(scan_color, 2))
+        painter.drawLine(self.scan_position, 0, self.scan_position, self.height())
+        
+        # Draw cyber grid corners
+        corner_color = QColor(13, 115, 119, 150)
+        painter.setPen(QPen(corner_color, 2))
+        
+        # Corner brackets
+        size = 15
+        painter.drawLine(5, 5, 5 + size, 5)
+        painter.drawLine(5, 5, 5, 5 + size)
+        
+        painter.drawLine(self.width() - 5 - size, 5, self.width() - 5, 5)
+        painter.drawLine(self.width() - 5, 5, self.width() - 5, 5 + size)
 
 
 class MainWindow(QMainWindow):
@@ -30,78 +111,122 @@ class MainWindow(QMainWindow):
         self.start_auto_lock(300000)  # 5 minutes
     
     def setup_ui(self):
-        """Initialize UI components with enhanced security design"""
-        self.setWindowTitle("🛡️ SecurePass - Professional Password Manager")
-        self.setGeometry(100, 100, 1200, 700)
+        """Initialize UI components with enhanced cybersecurity design"""
+        self.setWindowTitle("🛡️ SecurePass - CYBER SECURITY PROTOCOL")
+        self.setGeometry(100, 100, 1300, 750)
         self.apply_dark_theme()
+        
+        # Create cyber animated background
+        cyber_bg = CyberAnimatedWidget()
+        cyber_bg.setGeometry(0, 0, self.width(), self.height())
         
         # Central widget
         central = QWidget()
         self.setCentralWidget(central)
         layout = QVBoxLayout(central)
-        layout.setSpacing(15)
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(18)
+        layout.setContentsMargins(25, 25, 25, 25)
         
-        # Security header with status indicators
+        # Security header with enhanced status indicators
         header_layout = QHBoxLayout()
         
-        # Security status panel
+        # Enhanced security status panel
         security_panel = QWidget()
         security_panel.setObjectName("security_panel")
         security_panel.setStyleSheet("""
             QWidget#security_panel {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 rgba(13, 115, 119, 0.2), 
-                    stop:0.5 rgba(20, 160, 133, 0.3), 
-                    stop:1 rgba(13, 115, 119, 0.2));
-                border: 1px solid #0d7377;
-                border-radius: 10px;
-                padding: 10px;
+                    stop:0 rgba(13, 115, 119, 0.3), 
+                    stop:0.5 rgba(20, 160, 133, 0.4), 
+                    stop:1 rgba(13, 115, 119, 0.3));
+                border: 2px solid #0d7377;
+                border-radius: 12px;
+                padding: 15px;
+                min-height: 60px;
             }
         """)
         security_layout = QHBoxLayout(security_panel)
+        security_layout.setSpacing(20)
         
-        vault_status = QLabel("🔒 Vault: ENCRYPTED")
-        vault_status.setStyleSheet("color: #81e6d9; font-weight: bold; font-size: 10pt;")
+        vault_status = QLabel("🔒 VAULT: ENCRYPTED")
+        vault_status.setStyleSheet("""
+            color: #81e6d9; 
+            font-weight: bold; 
+            font-size: 11pt; 
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(129, 230, 217, 0.1);
+            border-radius: 6px;
+        """)
         security_layout.addWidget(vault_status)
         
-        session_status = QLabel("🟢 Session: ACTIVE")
-        session_status.setStyleSheet("color: #68d391; font-weight: bold; font-size: 10pt;")
+        session_status = QLabel("🟢 SESSION: ACTIVE")
+        session_status.setStyleSheet("""
+            color: #68d391; 
+            font-weight: bold; 
+            font-size: 11pt;
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(104, 211, 145, 0.1);
+            border-radius: 6px;
+        """)
         security_layout.addWidget(session_status)
         
-        encryption_status = QLabel("🛡️ AES-256 Protected")
-        encryption_status.setStyleSheet("color: #90cdf4; font-weight: bold; font-size: 10pt;")
+        encryption_status = QLabel("🛡️ AES-256 PROTECTED")
+        encryption_status.setStyleSheet("""
+            color: #90cdf4; 
+            font-weight: bold; 
+            font-size: 11pt;
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(144, 205, 244, 0.1);
+            border-radius: 6px;
+        """)
         security_layout.addWidget(encryption_status)
         
         header_layout.addWidget(security_panel)
         header_layout.addStretch()
         
-        # Search and lock section
+        # Enhanced search and lock section
         search_lock_layout = QHBoxLayout()
         
-        # Enhanced search bar
+        # Cyber-themed search bar
         self.search_box = QLineEdit()
-        self.search_box.setPlaceholderText("🔍 Search your encrypted credentials...")
+        self.search_box.setPlaceholderText("🔍 SEARCH ENCRYPTED CREDENTIALS...")
         self.search_box.textChanged.connect(self.search_credentials)
-        self.search_box.setMinimumHeight(40)
+        self.search_box.setMinimumHeight(45)
+        self.search_box.setStyleSheet("""
+            QLineEdit {
+                font-size: 12pt;
+                padding: 12px 18px;
+                min-height: 25px;
+            }
+        """)
         search_lock_layout.addWidget(self.search_box)
         
-        # Lock button with security styling
-        lock_btn = QPushButton("🔒 Lock Vault")
+        # Enhanced lock button
+        lock_btn = QPushButton("🔒 SECURE LOCK")
         lock_btn.clicked.connect(self.lock_vault)
         lock_btn.setProperty("class", "danger")
-        lock_btn.setMinimumHeight(40)
-        lock_btn.setMaximumWidth(120)
+        lock_btn.setMinimumHeight(45)
+        lock_btn.setMaximumWidth(140)
+        lock_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 12pt;
+                padding: 12px 18px;
+                min-height: 25px;
+            }
+        """)
         search_lock_layout.addWidget(lock_btn)
         
         header_layout.addLayout(search_lock_layout)
         layout.addLayout(header_layout)
         
-        # Credentials table with enhanced styling
+        # Enhanced credentials table with cyber styling
         self.table = QTableWidget()
         self.table.setColumnCount(5)
         self.table.setHorizontalHeaderLabels([
-            "🏢 Service", "👤 Username", "📁 Category", "📅 Last Modified", "🔧 Actions"
+            "🏢 SERVICE", "👤 USERNAME", "📁 CATEGORY", "📅 MODIFIED", "🔧 ACTIONS"
         ])
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
@@ -111,80 +236,137 @@ class MainWindow(QMainWindow):
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
-        self.table.setMinimumHeight(300)
+        self.table.setMinimumHeight(350)
         
-        # Add hover effects for table
+        # Add cyber hover effects for table
         self.table.setMouseTracking(True)
         self.table.cellEntered.connect(self.on_cell_hover)
         
         layout.addWidget(self.table)
         
-        # Enhanced button bar with sections
+        # Enhanced button bar with cyber sections
         btn_frame = QWidget()
         btn_frame.setStyleSheet("""
             QWidget {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 rgba(45, 55, 72, 0.5), 
-                    stop:1 rgba(26, 32, 44, 0.5));
-                border: 1px solid #4a5568;
-                border-radius: 10px;
-                padding: 10px;
+                    stop:0 rgba(45, 55, 72, 0.6), 
+                    stop:1 rgba(26, 32, 44, 0.6));
+                border: 2px solid #4a5568;
+                border-radius: 12px;
+                padding: 15px;
+                min-height: 80px;
             }
         """)
         btn_layout = QHBoxLayout(btn_frame)
+        btn_layout.setSpacing(15)
         
-        # Credential management section
-        cred_section = QLabel("📋 Credential Management:")
-        cred_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        # Credential management section with cyber styling
+        cred_section = QLabel("📋 CREDENTIAL OPERATIONS:")
+        cred_section.setStyleSheet("""
+            color: #a0aec0; 
+            font-weight: bold; 
+            font-size: 11pt; 
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(160, 174, 192, 0.1);
+            border-radius: 6px;
+        """)
         btn_layout.addWidget(cred_section)
         
-        add_btn = QPushButton("➕ Add New")
+        add_btn = QPushButton("➕ ADD NEW")
         add_btn.clicked.connect(self.add_credential)
+        add_btn.setMinimumHeight(40)
+        add_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(add_btn)
         
-        edit_btn = QPushButton("✏️ Edit")
+        edit_btn = QPushButton("✏️ EDIT")
         edit_btn.clicked.connect(self.edit_credential)
+        edit_btn.setMinimumHeight(40)
+        edit_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(edit_btn)
         
-        delete_btn = QPushButton("🗑️ Delete")
+        delete_btn = QPushButton("🗑️ DELETE")
         delete_btn.clicked.connect(self.delete_credential)
         delete_btn.setProperty("class", "danger")
+        delete_btn.setMinimumHeight(40)
+        delete_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(delete_btn)
         
-        btn_layout.addWidget(QLabel(" | "))  # Separator
+        # Separator
+        separator = QLabel(" ║ ")
+        separator.setStyleSheet("color: #4a5568; font-size: 14pt; font-weight: bold;")
+        btn_layout.addWidget(separator)
         
         # Security tools section
-        tools_section = QLabel("🔧 Security Tools:")
-        tools_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        tools_section = QLabel("🔧 SECURITY TOOLS:")
+        tools_section.setStyleSheet("""
+            color: #a0aec0; 
+            font-weight: bold; 
+            font-size: 11pt;
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(160, 174, 192, 0.1);
+            border-radius: 6px;
+        """)
         btn_layout.addWidget(tools_section)
         
-        gen_btn = QPushButton("🎲 Generate Password")
+        gen_btn = QPushButton("🎲 GENERATE")
         gen_btn.clicked.connect(self.show_generator)
+        gen_btn.setMinimumHeight(40)
+        gen_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(gen_btn)
         
-        btn_layout.addWidget(QLabel(" | "))  # Separator
+        # Separator
+        separator2 = QLabel(" ║ ")
+        separator2.setStyleSheet("color: #4a5568; font-size: 14pt; font-weight: bold;")
+        btn_layout.addWidget(separator2)
         
         # Data management section
-        data_section = QLabel("💾 Data Management:")
-        data_section.setStyleSheet("color: #a0aec0; font-weight: bold; font-size: 10pt;")
+        data_section = QLabel("💾 DATA MANAGEMENT:")
+        data_section.setStyleSheet("""
+            color: #a0aec0; 
+            font-weight: bold; 
+            font-size: 11pt;
+            padding: 8px 12px;
+            min-height: 30px;
+            background: rgba(160, 174, 192, 0.1);
+            border-radius: 6px;
+        """)
         btn_layout.addWidget(data_section)
         
-        export_btn = QPushButton("💾 Export")
+        export_btn = QPushButton("💾 EXPORT")
         export_btn.clicked.connect(self.export_data)
         export_btn.setProperty("class", "secondary")
+        export_btn.setMinimumHeight(40)
+        export_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(export_btn)
         
-        import_btn = QPushButton("📂 Import")
+        import_btn = QPushButton("📂 IMPORT")
         import_btn.clicked.connect(self.import_data)
         import_btn.setProperty("class", "secondary")
+        import_btn.setMinimumHeight(40)
+        import_btn.setStyleSheet("QPushButton { font-size: 11pt; padding: 10px 15px; }")
         btn_layout.addWidget(import_btn)
         
         btn_layout.addStretch()
         layout.addWidget(btn_frame)
         
-        # Enhanced status bar
-        status_text = "🟢 Ready | 🔒 Auto-lock in 5 minutes | 🛡️ All data encrypted with AES-256"
+        # Enhanced cyber-themed status bar
+        status_text = "🟢 SYSTEM READY | 🔒 AUTO-LOCK: 5 MIN | 🛡️ AES-256 ENCRYPTION ACTIVE | 🔐 SECURE PROTOCOL ENGAGED"
         self.statusBar().showMessage(status_text)
+        self.statusBar().setStyleSheet("""
+            QStatusBar {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #1a202c, stop:1 #2d3748);
+                border-top: 3px solid #0d7377;
+                color: #81e6d9;
+                padding: 10px;
+                font-size: 10pt;
+                font-weight: bold;
+                font-family: 'Courier New', monospace;
+                min-height: 25px;
+            }
+        """)
     
     def apply_dark_theme(self):
         """Apply modern security-focused dark theme with gradients and effects"""
@@ -204,9 +386,10 @@ class MainWindow(QMainWindow):
                     stop:0 #2d3748, stop:1 #1a202c);
                 border: 2px solid #4a5568;
                 border-radius: 8px;
-                padding: 12px 16px;
+                padding: 14px 18px;
                 color: #e2e8f0;
-                font-size: 11pt;
+                font-size: 12pt;
+                min-height: 20px;
                 selection-background-color: #0d7377;
             }
             QLineEdit:focus {
@@ -284,10 +467,10 @@ class MainWindow(QMainWindow):
                 color: white;
                 border: none;
                 border-radius: 8px;
-                padding: 12px 20px;
+                padding: 14px 22px;
                 font-weight: bold;
-                font-size: 10pt;
-                min-height: 15px;
+                font-size: 11pt;
+                min-height: 20px;
                 transition: all 0.3s ease;
             }
             QPushButton:hover {
